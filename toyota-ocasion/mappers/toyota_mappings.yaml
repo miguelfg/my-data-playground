@@ -1,0 +1,116 @@
+columns:
+  keep:
+    - id-0
+    - vehicleStatus-description
+    - sourceCode-0
+    - warranty-description
+    - mileage-value
+    - exteriorColour-0
+    - interiorColour-0
+    - trimColour-0
+    - history-previousUsage.description
+    - price-sellingPriceInclVAT
+    - price-sellingPriceExclVAT
+    - vehicleValue-marketPrice
+    - vehicleValue-cataloguePrice
+    - licensePlate-0
+    - vin-0
+    - productionDate-0
+    - product-model
+    - product-modelYear
+    - product-localModelCode
+    - product-bodyType
+    - product-versionName
+    - product-doors
+    - product-seats
+    - product-brand.description
+    - product-length.value
+    - product-height.value
+    - product-width.value
+    - product-carType.description
+    - product-engine.marketingFuelType.description
+    - product-engine.hybrid
+    - product-engine.plugin
+    - product-engine.powerOutputHorsepower.value
+    - product-engine.powerOutputKilowatts.value
+    - product-engine.engineKey.description
+    - product-eco.label.description
+    - product-eco.euroClass
+    - product-eco.efficiencyClass.description
+    - product-performance.acceleration.value
+    - product-performance.maxSpeed.value
+    - product-transmission.name
+    - product-transmission.gearbox
+    - monthlyPrice-0
+    - dealer-id
+    - dealer-name
+    - dealer-phoneNumber
+    - dealer-email
+    - dealer-website
+    - dealer-address.line
+    - dealer-address.city
+    - dealer-address.zip
+    - dealer-address.region
+    - dealer-address.province
+    - dealer-geoLocation.lat
+    - dealer-geoLocation.lon
+    - car_url
+  renamings:
+    - car_url -> car_url
+    - id-0 -> manufacturer_car_id
+    - vehicleStatus-description -> car_sale_status
+    - sourceCode-0 -> car_rental_type
+    - warranty-description -> car_remaining_warranty
+    - mileage-value -> car_mileage
+    - exteriorColour-0 -> car_exterior_color
+    - interiorColour-0 -> car_interior_color
+    - trimColour-0 -> car_interior_style
+    - history-previousUsage.description -> car_history_previous_usage
+    - price-sellingPriceInclVAT -> car_price
+    - price-sellingPriceExclVAT -> car_price_excl_vat
+    - vehicleValue-marketPrice -> car_martket_price
+    - vehicleValue-cataloguePrice -> car_catalogue_price
+    - licensePlate-0 -> car_license_plate
+    - vin-0 -> car_vin
+    - productionDate-0 -> car_registration_date
+    - product-model -> car_model
+    - product-modelYear -> car_model_year
+    - product-localModelCode -> car_local_model_id
+    - product-bodyType -> car_type
+    - product-versionName -> car_package
+    - product-doors -> car_doors_num
+    - product-seats -> car_seats
+    - product-brand.description -> car_brand
+    - product-length.value -> car_length
+    - product-height.value -> car_height
+    - product-width.value -> car_width
+    - product-carType.description -> car_body_type
+    - product-engine.marketingFuelType.description -> car_fuel
+    - product-engine.powerOutputHorsepower.value -> car_power_cv
+    - product-engine.powerOutputKilowatts.value -> car_power_kw
+    - product-eco.label.description -> car_pollution_badge
+    - product-eco.euroClass -> car_emissions_class
+    - product-performance.acceleration.value -> car_acceleration
+    - product-performance.maxSpeed.value -> car_max_speed
+    - product-transmission.name -> car_transmission
+    - product-transmission.gearbox -> car_gearbox
+    - dealer-id -> dealer_id
+    - dealer-name -> dealer_name
+    - dealer-phoneNumber -> dealer_phone
+    - dealer-email -> dealer_email
+    - dealer-website -> dealer_website
+    - dealer-address.line1 -> dealer_street
+    - dealer-address.city -> dealer_city
+    - dealer-address.zip -> dealer_zip_code
+    - dealer-address.region -> dealer_location
+    - dealer-address.province -> dealer_province
+    - dealer-geoLocation.lat -> dealer_geo_lat
+    - dealer-geoLocation.lon -> dealer_geo_lon
+  add:
+    - source: Toyota Oficial Ocasión
+    - source_url: https://www.toyota.es/
+  dtypes:
+    to_float:
+      - car_mileage
+    to_date:
+      - car_registration_date
