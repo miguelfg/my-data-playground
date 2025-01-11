@@ -1,6 +1,7 @@
-import sqlite3
-import pandas as pd
 import logging
+import sqlite3
+
+import pandas as pd
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -23,20 +24,23 @@ class BaseLoader:
     def save(self, df: pd.DataFrame, db_file, mode='replace'):
         schema_cols = self.get_table_columns(db_file)
         logger.debug(f"Columns in schema: {';'.join(schema_cols)}")
-        
+
         cols_in_schema = [col for col in df.columns if col in schema_cols]
-        cols_not_in_schema = [col for col in df.columns if col not in schema_cols]
+        cols_not_in_schema = [
+            col for col in df.columns if col not in schema_cols]
         prev_shape = df.shape
         df = df[cols_in_schema]
         post_shape = df.shape
-        logger.debug(f"Columns were not in schema: {';'.join(cols_not_in_schema)}")
-        logger.info(f"Reduced df to columns in coches schema, from shape {prev_shape} to {post_shape}")
+        logger.debug(
+            f"Columns were not in schema: {';'.join(cols_not_in_schema)}")
+        logger.info(
+            f"Reduced df to columns in coches schema, from shape {prev_shape} to {post_shape}")
 
-        df.to_sql('coches', 
-                  sqlite3.connect(db_file), 
-                  if_exists=mode, 
+        df.to_sql('coches',
+                  sqlite3.connect(db_file),
+                  if_exists=mode,
                   index=False,
-        )
+                  )
 
         logger.info(f"Data saved to sqlite: {db_file}")
 

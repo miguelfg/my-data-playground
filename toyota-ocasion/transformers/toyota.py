@@ -1,8 +1,8 @@
 import ast
-from transformers.base import BaseTransformer
+import logging
 
 import pandas as pd
-import logging
+from transformers.base import BaseTransformer
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -30,7 +30,8 @@ class ToyotaTransformer(BaseTransformer):
             "enrichmentStatus",
             "dealer",
         ]
-        dict_cols = [k for k, v in df.head(1).to_dict().items() if isinstance(v, dict)]
+        dict_cols = [k for k, v in df.head(
+            1).to_dict().items() if isinstance(v, dict)]
 
         for col in dict_cols:
             if col in df.columns:
@@ -38,7 +39,8 @@ class ToyotaTransformer(BaseTransformer):
                     dft = pd.json_normalize(
                         df[col].fillna("{}").apply(ast.literal_eval)
                     )
-                    logger.debug(f"Normalized dict col {col} with ast.literal_eval")
+                    logger.debug(
+                        f"Normalized dict col {col} with ast.literal_eval")
                 except Exception as e:
                     dft = df[col].apply(pd.Series)
                     logger.debug(f"Normalized dict col {col} with pd.Series")
@@ -50,7 +52,8 @@ class ToyotaTransformer(BaseTransformer):
         logger.info(f"Current shape of df: {df.shape}")
 
         # drop list type columns
-        list_cols = [k for k, v in df.head(1).to_dict().items() if isinstance(v, list)]
+        list_cols = [k for k, v in df.head(
+            1).to_dict().items() if isinstance(v, list)]
         df.drop(list_cols, axis=1, inplace=True)
         logger.debug(f"Dropped list cols: {';'.join(list_cols)}")
         logger.info(f"Current shape of df: {df.shape}")
@@ -120,9 +123,10 @@ class ToyotaTransformer(BaseTransformer):
         logger.debug(f"Dropped all null cols: {';'.join(cols_to_drop)}")
         logger.info(f"Current shape of df: {df.shape}")
 
-        ## Fix date cols format
+        # Fix date cols format
         for col in df.filter(like="Date").columns.tolist():
-            df[col] = pd.to_datetime(df[col], errors="coerce").dt.strftime("%Y-%m-%d")
+            df[col] = pd.to_datetime(
+                df[col], errors="coerce").dt.strftime("%Y-%m-%d")
             logger.debug(f"Transformed date column: {col}")
 
         df["car_url"] = df["id-0"].apply(

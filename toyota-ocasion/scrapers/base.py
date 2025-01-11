@@ -1,10 +1,10 @@
-import requests as rq 
-import pandas as pd
-import time
 import json
+import time
+import logging
 from datetime import datetime
 
-import logging
+import pandas as pd
+import requests as rq
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -32,7 +32,7 @@ class BaseScraper:
         url = url.format(**kwargs)
         logger.debug(f"New url is: {url}")
         return url
-    
+
     def get_headers(self, **kwargs):
         h = self.headers.copy()
         h.update(kwargs)
@@ -44,7 +44,7 @@ class BaseScraper:
         j.update(kwargs)
         logger.debug(f"New json is: {j}")
         return j
-    
+
     def get_params(self, **kwargs):
         if 'from_' in kwargs:
             kwargs['from'] = kwargs.pop('from_')
@@ -58,7 +58,7 @@ class BaseScraper:
         data.update(kwargs)
         logger.debug(f"New data is: {data}")
         return data
-    
+
     def get_total_items(self):
         total_items = self.responses[0]['total']
         logger.info(f"Total items: {total_items} to scrape")
@@ -68,27 +68,28 @@ class BaseScraper:
         logger.debug(f"Getting page url: {url}")
         if self.get_or_post == 'get':
             response = rq.get(url,
-                            headers=headers,
-                            params=params,
-                            cookies=self.cookies,
-                            json=json,
-                            timeout=10)
+                              headers=headers,
+                              params=params,
+                              cookies=self.cookies,
+                              json=json,
+                              timeout=10)
         else:
             response = rq.post(url,
-                            headers=headers,
-                            params=params,
-                            cookies=self.cookies,
-                            json=json,
-                            data=data,
-                            timeout=10)
-        
+                               headers=headers,
+                               params=params,
+                               cookies=self.cookies,
+                               json=json,
+                               data=data,
+                               timeout=10)
+
         if str(response.status_code).startswith('2'):
             self.responses.append(response.json())
             return
 
-        logger.error(f"Error: Could not scrape the URL - response code {response.status_code}: {response.text}")
-        raise ValueError(f"Error: Could not scrape the URL - response code {response.status_code}")
-
+        logger.error(
+            f"Error: Could not scrape the URL - response code {response.status_code}: {response.text}")
+        raise ValueError(
+            f"Error: Could not scrape the URL - response code {response.status_code}")
 
     def save_responses(self):
         output_file = f"{self.ofolder}{self.name}-{datetime.now().strftime('%Y%m%d%H%M%S')}.json"
@@ -96,9 +97,8 @@ class BaseScraper:
         with open(output_file, 'w') as f:
             json.dump(self.responses, f)
         logger.info(f"Responses saved to {output_file}")
-        
+
         return output_file
-    
 
     def scrape_first(self):
         url = self.get_url(page=1, page_size=self.page_size)
@@ -106,10 +106,9 @@ class BaseScraper:
         params = self.get_params(page=1, page_size=self.page_size)
         j = self.get_json()
         data = self.get_data()
-        self.get_page(url=url, headers=headers, 
+        self.get_page(url=url, headers=headers,
                       params=params, json=j, data=data)
         logger.info(f"First page added to responses")
-        
 
     def scrape_rest(self, total_items):
         requests = list(range(2, total_items // self.page_size))
@@ -123,12 +122,12 @@ class BaseScraper:
             params = self.get_params(page=r, page_size=self.page_size)
             j = self.get_json()
             data = self.get_data()
-            self.get_page(url=url, headers=headers, 
-                            params=params, json=j, data=data)
+            self.get_page(url=url, headers=headers,
+                          params=params, json=j, data=data)
             logger.debug(f"Page {r} added to responses")
 
             time.sleep(0.5)
-            
+
     def scrape(self):
         # scrape first page
         self.scrape_first()
@@ -142,17 +141,16 @@ class BaseScraper:
         return self.save_responses()
 
 
-
 class ParserJson2CSV:
 
     def __init__(self):
         pass
 
     def read_data(self, json_file):
-        with open(json_file, 'r') as f:
+        with open(json_file) as f:
             data = json.load(f)
         return data
-    
+
     def save_data(self, df, json_file):
         # save to csv with datetime timestamp
         output_csv = json_file.replace('.json', '.csv')
@@ -170,7 +168,7 @@ class ParserJson2CSV:
 
         df = pd.concat(dfs)
         return df
-    
+
     def run(self, json_file):
 
         data = self.read_data(json_file)
@@ -178,5 +176,3 @@ class ParserJson2CSV:
         output_csv = self.save_data(df, json_file)
 
         return output_csv
-
-

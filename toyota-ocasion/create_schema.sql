@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS "coches" (
   "manufacturer_code" TEXT,
   "manufacturer_car_id" TEXT,
-  
+
   "car_id" TEXT,
   "car_vin" TEXT,
   "car_license_plate" TEXT,
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS "coches" (
   "car_height" INTEGER,
   "car_length" INTEGER,
   "car_width" INTEGER,
-  
+
   "car_registration_year" INTEGER,
   "car_age_months" INTEGER,
   "car_registration_date" TEXT,
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS "coches" (
   "car_rental_type" TEXT,
   "car_sale_status" TEXT,
   "car_financing_tae" TEXT,
-  
+
   "car_url" TEXT,
   -- "car_source_url" TEXT,
   "car_views" INTEGER,

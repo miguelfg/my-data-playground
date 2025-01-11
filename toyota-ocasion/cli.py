@@ -1,18 +1,19 @@
 import os
-import click
+import logging
 from glob import glob
 
+import click
+from loaders.base import BaseLoader
+from mappers.toyota import ToyotaMapper
 from scrapers.toyota import ToyotaScraper, ToyotaJson2CSV
 from transformers.toyota import ToyotaTransformer
-from mappers.toyota import ToyotaMapper
-from loaders.base import BaseLoader
 
-
-import logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # crate cli group
+
+
 @click.group()
 def cli():
     pass
@@ -27,14 +28,14 @@ def scrape(limit, debug):
     scraper = ToyotaScraper(limit=limit)
     output_file = scraper.scrape()
     logger.info(f"Scraped output file: {output_file}")
-   
+
 
 def get_last_modified_file(folder='data/scraped', brand='', extension='.json'):
     files = glob(f'{folder}{os.sep}{brand}*{extension}')
     if not files:
         logger.error("No files found")
         return
-    
+
     input_file = max(files, key=os.path.getctime)
     return input_file
 
@@ -66,7 +67,6 @@ def transform(input_file, debug):
         input_file = get_last_modified_file(brand='toyota', extension='.csv')
         logger.info(f"Using last modified file: {input_file}")
 
-
     proc = ToyotaTransformer()
     output_file = proc.run(input_file=input_file)
     logger.info(f"Transformed output file: {output_file}")
@@ -80,12 +80,13 @@ def f_map(input_file, debug):
 
     if input_file is None:
         # find last modified file in data/scraped
-        input_file = get_last_modified_file(folder='data/transformed', brand='toyota', extension='.csv')
+        input_file = get_last_modified_file(
+            folder='data/transformed', brand='toyota', extension='.csv')
         logger.info(f"Using last modified file: {input_file}")
 
     proc = ToyotaMapper()
     print("")
-    
+
     output_file = proc.run(input_file=input_file)
     logger.info(f"Mapped output file: {output_file}")
 
@@ -100,7 +101,8 @@ def load(input_file, db_file, mode, debug):
 
     if input_file is None:
         # find last modified file in data/scraped
-        input_file = get_last_modified_file(folder='data/mapped', brand='toyota', extension='.csv')
+        input_file = get_last_modified_file(
+            folder='data/mapped', brand='toyota', extension='.csv')
         logger.info(f"Using last modified file: {input_file}")
 
     loader = BaseLoader()

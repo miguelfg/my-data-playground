@@ -9,7 +9,7 @@ clean:
 	find . -name "*.pyc" -exec rm -f {} \;
 
 install-jupyter-extensions:
-	poetry run jupyter contrib nbextension install --user 
+	poetry run jupyter contrib nbextension install --user
 	poetry run jupyter nbextensions_configurator enable --user
 
 install-dev:
@@ -56,7 +56,7 @@ run-etl-no-scrape:
 	poetry run python cli.py load
 
 db-init:
-	# create database with schema 
+	# create database with schema
 	poetry run sqlite3 data/coches.db < create_schema.sql
 
 db-drop-coches:
