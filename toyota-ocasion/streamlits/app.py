@@ -27,6 +27,21 @@ def load_data():
 # Load the dataset
 df = load_data()
 
+# fill car_registration_year from car_registration_date
+df['car_registration_year'] = pd.to_datetime(
+        df['car_registration_date']
+    ).dt.year
+
+# create mapping dict of cities to dealer_locations
+cities_to_locations = {
+    c: l for c, l in df[['dealer_city', 'dealer_location']].drop_duplicates().dropna(how='any').values
+}
+
+# fill empty dealer_location with city
+df['dealer_location'] = df['dealer_location'].fillna(
+    df['dealer_city'].map(cities_to_locations)
+)
+
 # Identify columns with low cardinality
 low_cardinality_cols = [col for col in df.columns if
                         (df[col].nunique() > 1) and
@@ -53,7 +68,7 @@ filters['car_mileage'] = st.sidebar.slider(
 )
 
 # add some custom cols not as low cardinality
-desired_filters = ['car_brand', 'car_model_name', 'dealer_location',]
+desired_filters = ['car_brand', 'dealer_location',]
 for col in desired_filters:
     filters[col] = st.sidebar.multiselect(f'Select {col}',
                                           options=df[col].unique(),
@@ -120,13 +135,22 @@ st.write(sample_df[string_columns], use_container_width=True)
 st.header('Scatter Plot: car_mileage vs. car_price')
 fig, ax = plt.subplots()
 hue_parameter = st.selectbox('Select Hue Parameter',
-                             ['car_package', 'car_model_name', 'car_model',
-                              'dealer_location', 'dealer_name',
+                             [
+                              'car_brand',
+                              'dealer_location',
+                                'car_package', 
+                                'car_gear_box', 
+                                'car_pollution_badge', 
+                                'car_seats', 
+                                'car_sale_status', 
+                                'car_history_previous_usage', 
+                              'car_model',
+                              'dealer_name',
                               None
                               ]
                              )
 style_parameter = st.selectbox('Select Style Parameter',
-                               [None, 'car_registration_year', 'car_fuel', ]
+                               ['car_fuel',  'car_registration_year', None, ]
                                )
 
 sns.scatterplot(data=filtered_df,
@@ -145,9 +169,13 @@ col1, col2 = st.columns(2)
 
 # Scatter plot
 with col1:
-    st.header('Count of Rows per Model')
     fig, ax = plt.subplots()
     year_counts = filtered_df['car_package'].value_counts()
+    title = 'Counts by car packages'
+    if year_counts.shape[0] > 20:
+        year_counts = year_counts.head(20)
+        title = 'Top 20 car packages'
+    st.header(title)
     year_counts.plot(kind='barh', ax=ax)
     st.pyplot(fig)
 
@@ -202,22 +230,28 @@ with col7:
     st.pyplot(fig)
 
 with col8:
-    st.header('Count of Rows per Remaining Warranty Whole Years')
+    title = 'Count of Rows per Remaining Warranty Whole Years'
     fig, ax = plt.subplots()
-    warranty_counts = filtered_df['car_remaining_warranty_years'].value_counts(
-    )
+    warranty_counts = filtered_df['car_remaining_warranty'].value_counts()
+    if warranty_counts.shape[0] > 10:
+        warranty_counts = warranty_counts.head(10)
+        title = 'Top 10 Remaining Warranty Whole Years'
+
+    st.header(title)
     warranty_counts.plot(kind='barh', ax=ax)
     st.pyplot(fig)
 
 
 # Boxplots grouped by model_name
 st.header('Boxplots: car_price vs. car_model for each model name')
-model_names = filtered_df['car_model_name'].unique()
-car_model_names = ['Niro', 'eNiro', 'Ceed', 'XCeed', 'Sportage']
+car_model_names = filtered_df['car_model_name'].value_counts().head(10).index.values
+# car_model_names = ['Niro', 'eNiro', 'Ceed', 'XCeed', 'Sportage']
 for model in car_model_names:
-    for engine in filtered_df['car_engine'].unique():
+    for engine in filtered_df['car_engine'].dropna().unique():
         model_df = filtered_df[(filtered_df['car_model_name'] == model)
                                & (filtered_df['car_engine'] == engine)]
+
+        print(f"Model: {model} - Engine: {engine} - Shape: {model_df.shape}")
 
         if model_df.shape[0] < 20:
             print(f"Skipping {model} - {engine} boxplot")
