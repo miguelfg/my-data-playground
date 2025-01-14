@@ -29,8 +29,8 @@ df = load_data()
 
 # fill car_registration_year from car_registration_date
 df['car_registration_year'] = pd.to_datetime(
-        df['car_registration_date']
-    ).dt.year
+    df['car_registration_date']
+).dt.year
 
 # create mapping dict of cities to dealer_locations
 cities_to_locations = {
@@ -136,18 +136,18 @@ st.header('Scatter Plot: car_mileage vs. car_price')
 fig, ax = plt.subplots()
 hue_parameter = st.selectbox('Select Hue Parameter',
                              [
-                              'car_brand',
-                              'dealer_location',
-                                'car_package', 
-                                'car_gear_box', 
-                                'car_pollution_badge', 
-                                'car_seats', 
-                                'car_sale_status', 
-                                'car_history_previous_usage', 
-                              'car_model',
-                              'dealer_name',
-                              None
-                              ]
+                                 'car_brand',
+                                 'dealer_location',
+                                 'car_package',
+                                 'car_gear_box',
+                                 'car_pollution_badge',
+                                 'car_seats',
+                                 'car_sale_status',
+                                 'car_history_previous_usage',
+                                 'car_model',
+                                 'dealer_name',
+                                 None
+                             ]
                              )
 style_parameter = st.selectbox('Select Style Parameter',
                                ['car_fuel',  'car_registration_year', None, ]
@@ -244,7 +244,8 @@ with col8:
 
 # Boxplots grouped by model_name
 st.header('Boxplots: car_price vs. car_model for each model name')
-car_model_names = filtered_df['car_model_name'].value_counts().head(10).index.values
+car_model_names = filtered_df['car_model_name'].value_counts().head(
+    10).index.values
 # car_model_names = ['Niro', 'eNiro', 'Ceed', 'XCeed', 'Sportage']
 for model in car_model_names:
     for engine in filtered_df['car_engine'].dropna().unique():
