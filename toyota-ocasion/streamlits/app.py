@@ -81,8 +81,6 @@ for col in low_cardinality_cols:
                                           default=df[col].unique())
 
 # Function to filter data based on sidebar filters
-
-
 @st.cache_data
 def filter_data(df, filters):
     # Filter data based on sidebar filters
@@ -175,8 +173,8 @@ with col1:
     if year_counts.shape[0] > 20:
         year_counts = year_counts.head(20)
         title = 'Top 20 car packages'
-    st.header(title)
     year_counts.plot(kind='barh', ax=ax)
+    st.header(title)
     st.pyplot(fig)
 
 # Horizontal bar plot
@@ -192,26 +190,37 @@ with col2:
 # Barh for transmission and fuel
 col3, col4 = st.columns(2)
 with col3:
-    st.header('Count of Rows per Transmission')
     fig, ax = plt.subplots()
     transmission_counts = filtered_df['car_transmission'].value_counts()
     transmission_counts.plot(kind='barh', ax=ax)
+    title = 'Counts by car transmission'
+    if transmission_counts.shape[0] > 20:
+        title = 'Top 20 car transmissions'
+        transmission_counts = transmission_counts.head(20)
+    st.header(title)    
     st.pyplot(fig)
 
 with col4:
-    st.header('Count of Rows per Fuel')
     fig, ax = plt.subplots()
     fuel_counts = filtered_df['car_fuel'].value_counts()
     fuel_counts.plot(kind='barh', ax=ax)
+    title = 'Counts by car fuel'
+    if fuel_counts.shape[0] > 20:
+        title = 'Top 20 car fuels'
+        fuel_counts = fuel_counts.head(20)
+    st.header(title)
     st.pyplot(fig)
 
 # Barh for interior and bodystyle
 col5, col6 = st.columns(2)
 with col5:
-    st.header('Count of Rows per Interior Color')
     fig, ax = plt.subplots()
     interior_counts = filtered_df['car_interior_color'].value_counts()
     interior_counts.plot(kind='barh', ax=ax)
+    title = 'Counts by car interior color'
+    if interior_counts.shape[0] > 20:
+        title = 'Top 20 car interior colors'
+        interior_counts = interior_counts.head(20)
     st.pyplot(fig)
 
 with col6:
@@ -219,7 +228,12 @@ with col6:
     fig, ax = plt.subplots()
     exterior_counts = filtered_df['car_exterior_color'].value_counts()
     exterior_counts.plot(kind='barh', ax=ax)
+    title = 'Counts by car exterior color'
+    if exterior_counts.shape[0] > 20:
+        title = 'Top 20 car exterior colors'
+        exterior_counts = exterior_counts.head(20)
     st.pyplot(fig)
+
 # Barh for emissionClass and remainingWarrantyWholeYears
 col7, col8 = st.columns(2)
 with col7:
