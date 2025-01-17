@@ -82,6 +82,8 @@ for col in low_cardinality_cols:
                                           default=df[col].unique())
 
 # Function to filter data based on sidebar filters
+
+
 @st.cache_data
 def filter_data(df, filters):
     # Filter data based on sidebar filters
@@ -198,7 +200,7 @@ with col3:
     if transmission_counts.shape[0] > 20:
         title = 'Top 20 car transmissions'
         transmission_counts = transmission_counts.head(20)
-    st.header(title)    
+    st.header(title)
     st.pyplot(fig)
 
 with col4:
@@ -260,7 +262,7 @@ with col8:
 # Boxplots grouped by model_name
 st.header('Boxplots: car_price vs. car_model for each model name')
 car_model_names = filtered_df['car_model_name'].value_counts()\
-                    .head(10).index.values
+    .head(10).index.values
 
 for model in car_model_names:
     for engine in filtered_df['car_engine'].dropna().unique():
