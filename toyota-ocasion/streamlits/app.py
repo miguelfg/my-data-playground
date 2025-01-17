@@ -15,7 +15,8 @@ st.set_page_config(layout="wide")
 @st.cache_data
 def load_data():
 
-    data_path = os.path.join('data', 'coches.db')
+    data_path = st.secrets["DB_PATH"] or os.path.join('data', 'coches.db')
+    print(data_path)
 
     # create connection to sqlite db
     conn = sqlite3.connect(data_path)
