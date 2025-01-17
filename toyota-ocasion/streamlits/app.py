@@ -1,3 +1,4 @@
+import os
 import sqlite3
 
 import pandas as pd
@@ -14,7 +15,7 @@ st.set_page_config(layout="wide")
 @st.cache_data
 def load_data():
 
-    data_path = 'data/coches.db'
+    data_path = os.path.join('data', 'coches.db')
 
     # create connection to sqlite db
     conn = sqlite3.connect(data_path)
@@ -258,9 +259,9 @@ with col8:
 
 # Boxplots grouped by model_name
 st.header('Boxplots: car_price vs. car_model for each model name')
-car_model_names = filtered_df['car_model_name'].value_counts().head(
-    10).index.values
-# car_model_names = ['Niro', 'eNiro', 'Ceed', 'XCeed', 'Sportage']
+car_model_names = filtered_df['car_model_name'].value_counts()\
+                    .head(10).index.values
+
 for model in car_model_names:
     for engine in filtered_df['car_engine'].dropna().unique():
         model_df = filtered_df[(filtered_df['car_model_name'] == model)

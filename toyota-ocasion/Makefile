@@ -83,3 +83,13 @@ db-quick-stats: db-head db-count-rows
 
 run-streamlit:
 	poetry run streamlit run streamlits/app.py
+
+# deploy-streamlit-community:
+# 	# poetry run pip freeze > streamlits/requirements.txt
+# 	# mkdir -p streamlits/data/
+# 	# cp data/coches.db streamlits/data/
+# 	# mkdir -p ../.streamlit/
+# 	# touch ../.streamlit/config.toml
+# 	# touch ../.streamlit/secrets.toml
+# 	# touch ../packages.txt
+# 	# poetry run streamlit deploy streamlits/app.py
