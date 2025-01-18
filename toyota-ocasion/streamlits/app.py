@@ -23,7 +23,7 @@ def load_data():
 
     # Read sqlite db file into a DataFrame
     df = pd.read_sql_query("SELECT * FROM coches", conn)
-    
+
     # fill car_registration_year from car_registration_date
     df['car_registration_year'] = pd.to_datetime(
         df['car_registration_date']
@@ -38,8 +38,9 @@ def load_data():
     df['dealer_location'] = df['dealer_location'].fillna(
         df['dealer_city'].map(cities_to_locations)
     )
-    
+
     return df
+
 
 # Load the dataset
 df = load_data()
@@ -86,6 +87,8 @@ for col in low_cardinality_cols:
                                           default=df[col].unique())
 
 # Function to filter data based on sidebar filters
+
+
 @st.cache_data
 def filter_data(df, filters):
     # Filter data based on sidebar filters
@@ -152,10 +155,10 @@ hue_parameter = st.selectbox('Select Hue Parameter',
                              )
 style_parameter = st.selectbox('Select Style Parameter',
                                ['car_fuel',
-                                 'car_pollution_badge',
-                                 'car_seats',
-                                 'dealer_name',
-                                 None, ]
+                                'car_pollution_badge',
+                                'car_seats',
+                                'dealer_name',
+                                None, ]
                                )
 
 sns.scatterplot(data=filtered_df,
@@ -175,21 +178,42 @@ col1, col2 = st.columns(2)
 # Scatter plot
 with col1:
     fig, ax = plt.subplots()
-    year_counts = filtered_df['car_package'].value_counts()
+    package_counts = filtered_df['car_package'].value_counts()
     title = 'Counts by car packages'
-    if year_counts.shape[0] > 20:
-        year_counts = year_counts.head(20)
+    if package_counts.shape[0] > 20:
+        package_counts = package_counts.head(20)
         title = 'Top 20 car packages'
-    year_counts.plot(kind='barh', ax=ax)
     st.header(title)
+    sns.barplot(package_counts
+                .reset_index(drop=False)
+                .rename(columns={'car_package': 'Car Package'})
+                .rename(columns={'count': 'Counts'}),
+                x="Counts",
+                y="Car Package",
+                palette="viridis",
+                hue="Car Package",
+                legend=False)
     st.pyplot(fig)
 
 # Horizontal bar plot
 with col2:
-    st.header('Count of Rows per Year')
     fig, ax = plt.subplots()
     year_counts = filtered_df['car_registration_year'].value_counts()
-    year_counts.plot(kind='barh', ax=ax)
+    year_counts.index = year_counts.index.astype(int)
+    title = 'Count of Rows per Year'
+    if year_counts.shape[0] > 20:
+        year_counts = year_counts.head(20)
+        title = 'Top 20 Registration Years'
+    st.header(title)
+    sns.barplot(year_counts
+                .reset_index(drop=False)
+                .rename(columns={'car_registration_year': 'Registration Year'})
+                .rename(columns={'count': 'Counts'}),
+                x="Registration Year",
+                y="Counts",
+                palette="viridis",
+                hue="Registration Year",
+                legend=False)
     st.pyplot(fig)
 
 
@@ -199,23 +223,39 @@ col3, col4 = st.columns(2)
 with col3:
     fig, ax = plt.subplots()
     transmission_counts = filtered_df['car_transmission'].value_counts()
-    transmission_counts.plot(kind='barh', ax=ax)
     title = 'Counts by car transmission'
     if transmission_counts.shape[0] > 20:
         title = 'Top 20 car transmissions'
         transmission_counts = transmission_counts.head(20)
     st.header(title)
+    sns.barplot(transmission_counts
+                .reset_index(drop=False)
+                .rename(columns={'car_transmission': 'Car Transmission'})
+                .rename(columns={'count': 'Counts'}),
+                x="Counts",
+                y="Car Transmission",
+                palette="viridis",
+                hue="Car Transmission",
+                legend=False)
     st.pyplot(fig)
 
 with col4:
     fig, ax = plt.subplots()
     fuel_counts = filtered_df['car_fuel'].value_counts()
-    fuel_counts.plot(kind='barh', ax=ax)
     title = 'Counts by car fuel'
     if fuel_counts.shape[0] > 20:
         title = 'Top 20 car fuels'
         fuel_counts = fuel_counts.head(20)
     st.header(title)
+    sns.barplot(fuel_counts
+                .reset_index(drop=False)
+                .rename(columns={'car_fuel': 'Car Fuel'})
+                .rename(columns={'count': 'Counts'}),
+                x="Counts",
+                y="Car Fuel",
+                palette="viridis",
+                hue="Car Fuel",
+                legend=False)
     st.pyplot(fig)
 
 # Barh for interior and bodystyle
@@ -223,22 +263,40 @@ col5, col6 = st.columns(2)
 with col5:
     fig, ax = plt.subplots()
     interior_counts = filtered_df['car_interior_color'].value_counts()
-    interior_counts.plot(kind='barh', ax=ax)
     title = 'Counts by car interior color'
     if interior_counts.shape[0] > 20:
         title = 'Top 20 car interior colors'
         interior_counts = interior_counts.head(20)
+    st.header(title)
+    sns.barplot(interior_counts
+                .reset_index(drop=False)
+                .rename(columns={'car_interior_color': 'Interior Color'})
+                .rename(columns={'count': 'Counts'}),
+                x="Counts",
+                y="Interior Color",
+                palette="viridis",
+                hue="Interior Color",
+                legend=False)
     st.pyplot(fig)
 
 with col6:
-    st.header('Count of Rows per Exterior Color')
     fig, ax = plt.subplots()
     exterior_counts = filtered_df['car_exterior_color'].value_counts()
-    exterior_counts.plot(kind='barh', ax=ax)
     title = 'Counts by car exterior color'
     if exterior_counts.shape[0] > 20:
         title = 'Top 20 car exterior colors'
         exterior_counts = exterior_counts.head(20)
+    st.header(title)
+
+    sns.barplot(exterior_counts
+                .reset_index(drop=False)
+                .rename(columns={'car_exterior_color': 'Exterior Color'})
+                .rename(columns={'count': 'Counts'}),
+                x="Counts",
+                y="Exterior Color",
+                palette="viridis",
+                hue="Exterior Color",
+                legend=False)
     st.pyplot(fig)
 
 # Barh for emissionClass and remainingWarrantyWholeYears
@@ -247,7 +305,15 @@ with col7:
     st.header('Count of Rows per Emissions Class')
     fig, ax = plt.subplots()
     emission_class_counts = filtered_df['car_emissions_class'].value_counts()
-    emission_class_counts.plot(kind='barh', ax=ax)
+    sns.barplot(emission_class_counts
+                .reset_index(drop=False)
+                .rename(columns={'car_emissions_class': 'Emissions Class'})
+                .rename(columns={'count': 'Counts'}),
+                x="Counts",
+                y="Emissions Class",
+                palette="viridis",
+                hue="Emissions Class",
+                legend=False)
     st.pyplot(fig)
 
 with col8:
@@ -259,7 +325,15 @@ with col8:
         title = 'Top 10 Remaining Warranty Whole Years'
 
     st.header(title)
-    warranty_counts.plot(kind='barh', ax=ax)
+    sns.barplot(warranty_counts
+                .reset_index(drop=False)
+                .rename(columns={'car_remaining_warranty': 'Remaining Warranty'})
+                .rename(columns={'count': 'Counts'}),
+                x="Counts",
+                y="Remaining Warranty",
+                palette="viridis",
+                hue="Remaining Warranty",
+                legend=False)
     st.pyplot(fig)
 
 
