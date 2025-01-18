@@ -23,26 +23,26 @@ def load_data():
 
     # Read sqlite db file into a DataFrame
     df = pd.read_sql_query("SELECT * FROM coches", conn)
-    return df
+    
+    # fill car_registration_year from car_registration_date
+    df['car_registration_year'] = pd.to_datetime(
+        df['car_registration_date']
+    ).dt.year
 
+    # create mapping dict of cities to dealer_locations
+    cities_to_locations = {
+        c: l for c, l in df[['dealer_city', 'dealer_location']].drop_duplicates().dropna(how='any').values
+    }
+
+    # fill empty dealer_location with city
+    df['dealer_location'] = df['dealer_location'].fillna(
+        df['dealer_city'].map(cities_to_locations)
+    )
+    
+    return df
 
 # Load the dataset
 df = load_data()
-
-# fill car_registration_year from car_registration_date
-df['car_registration_year'] = pd.to_datetime(
-    df['car_registration_date']
-).dt.year
-
-# create mapping dict of cities to dealer_locations
-cities_to_locations = {
-    c: l for c, l in df[['dealer_city', 'dealer_location']].drop_duplicates().dropna(how='any').values
-}
-
-# fill empty dealer_location with city
-df['dealer_location'] = df['dealer_location'].fillna(
-    df['dealer_city'].map(cities_to_locations)
-)
 
 # Identify columns with low cardinality
 low_cardinality_cols = [col for col in df.columns if
@@ -51,7 +51,10 @@ low_cardinality_cols = [col for col in df.columns if
 # low_cardinality_cols = low_cardinality_cols
 df[low_cardinality_cols] = df[low_cardinality_cols].fillna("Unknown")
 
+
+#
 # Sidebar filters
+#
 st.sidebar.header('Filters')
 
 filters = {}
@@ -83,8 +86,6 @@ for col in low_cardinality_cols:
                                           default=df[col].unique())
 
 # Function to filter data based on sidebar filters
-
-
 @st.cache_data
 def filter_data(df, filters):
     # Filter data based on sidebar filters
@@ -113,10 +114,13 @@ def filter_data(df, filters):
 # Filter the data
 filtered_df = filter_data(df, filters)
 
+############################################
+# Charts and tables
+############################################
+
 # Display the number of rows selected
 st.header('Number of Rows Selected')
 st.metric(label="", value=filtered_df.shape[0])
-
 
 # Display a table with a sample of 10 random rows
 st.header('Sample of 10 Random Rows (String/Object Columns)')
@@ -128,7 +132,6 @@ else:
     sample_df = filtered_df.sample(sample_size)
 
 string_columns = sample_df.select_dtypes(include=['object']).columns.tolist()
-print('car_age_months' in sample_df.columns)
 if 'car_age_months' not in string_columns and 'car_age_months' in sample_df.columns:
     string_columns.append('car_age_months')
 st.write(sample_df[string_columns], use_container_width=True)
@@ -140,19 +143,19 @@ hue_parameter = st.selectbox('Select Hue Parameter',
                              [
                                  'car_brand',
                                  'dealer_location',
-                                 'car_package',
+                                 'car_registration_year',
                                  'car_gear_box',
-                                 'car_pollution_badge',
-                                 'car_seats',
                                  'car_sale_status',
                                  'car_history_previous_usage',
-                                 'car_model',
-                                 'dealer_name',
                                  None
                              ]
                              )
 style_parameter = st.selectbox('Select Style Parameter',
-                               ['car_fuel',  'car_registration_year', None, ]
+                               ['car_fuel',
+                                 'car_pollution_badge',
+                                 'car_seats',
+                                 'dealer_name',
+                                 None, ]
                                )
 
 sns.scatterplot(data=filtered_df,
