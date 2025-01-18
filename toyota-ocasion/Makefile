@@ -57,27 +57,27 @@ run-etl-no-scrape:
 
 db-init:
 	# create database with schema
-	poetry run sqlite3 data/coches.db < create_schema.sql
+	poetry run sqlite3 streamlits/coches.db < create_schema.sql
 
 db-drop-coches:
 	# drop coches table from sqlite3
-	poetry run sqlite3 data/coches.db "drop table coches;"
+	poetry run sqlite3 streamlits/coches.db "drop table coches;"
 
 db-flush:
 	# flush coches table from sqlite3
-	poetry run sqlite3 data/coches.db "delete from coches;"
+	poetry run sqlite3 streamlits/coches.db "delete from coches;"
 
 db-schema-temp:
 	poetry run sqlite3 data/temp.db .schema > data/temp_schema.sql
 
 db-schema:
-	poetry run sqlite3 data/coches.db .schema
+	poetry run sqlite3 streamlits/coches.db .schema
 
 db-count-rows:
-	poetry run sqlite3 data/coches.db "select count(*) from coches;"
+	poetry run sqlite3 streamlits/coches.db "select count(*) from coches;"
 
 db-head:
-	poetry run sqlite3 data/coches.db "select * from coches limit 3;"
+	poetry run sqlite3 streamlits/coches.db "select * from coches limit 3;"
 
 db-quick-stats: db-head db-count-rows
 
@@ -87,7 +87,7 @@ run-streamlit:
 # deploy-streamlit-community:
 # 	# poetry run pip freeze > streamlits/requirements.txt
 # 	# mkdir -p streamlits/data/
-# 	# cp data/coches.db streamlits/data/
+# 	# cp streamlits/coches.db streamlits/data/
 # 	# mkdir -p ../.streamlit/
 # 	# touch ../.streamlit/config.toml
 # 	# touch ../.streamlit/secrets.toml
