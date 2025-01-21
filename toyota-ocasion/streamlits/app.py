@@ -16,7 +16,6 @@ st.set_page_config(layout="wide")
 def load_data():
 
     data_path = st.secrets["DB_PATH"] or os.path.join('data', 'coches.db')
-    print(data_path)
 
     # create connection to sqlite db
     conn = sqlite3.connect(data_path)
@@ -31,7 +30,7 @@ def load_data():
     df['car_registration_year'] = pd.to_datetime(
         df['car_registration_date']
     ).dt.year
-    
+
     # create mapping dict of cities to dealer_locations
     cities_to_locations = {
         c: l for c, l in df[['dealer_city', 'dealer_location']].drop_duplicates().dropna(how='any').values
@@ -113,12 +112,9 @@ def filter_data(df, filters):
         (filtered_df['car_mileage'] <= filters['car_mileage'][1])
     ]
 
-    print(len(filters.items()))
     for col, values in filters.items():
         if col in ['car_price', 'car_mileage']:
             continue
-        print("Filtering by column: ", col,
-              " kept with df shape of: ", filtered_df.shape)
         filtered_df = filtered_df[filtered_df[col].isin(values)]
 
     return filtered_df
@@ -126,12 +122,12 @@ def filter_data(df, filters):
 
 # Filter the data
 filtered_df = filter_data(df, filters)
-print(filtered_df.columns.tolist())
 
 ############################################
 # Dashboard tabs
 ############################################
-tab1, tab2, tab3, tab4= st.tabs(["Geo & Table", "Counts", "Price Ranges", "Price vs Mileage"])
+tab1, tab2, tab3, tab4 = st.tabs(
+    ["Geo & Table", "Counts", "Price Ranges", "Price vs Mileage"])
 
 ############################################
 # Charts and tables
@@ -140,15 +136,14 @@ tab1, tab2, tab3, tab4= st.tabs(["Geo & Table", "Counts", "Price Ranges", "Price
 with tab1:
 
     df_geo = filtered_df\
-                .dropna(how='any', subset=['dealer_geo_lat', 'dealer_geo_lon'])
-    
+        .dropna(how='any', subset=['dealer_geo_lat', 'dealer_geo_lon'])
 
     st.header('Geographical distribution of dealers')
     fig, ax = plt.subplots()
-    st.map(df_geo, 
-           latitude="dealer_geo_lat", 
-           longitude="dealer_geo_lon", 
-    )
+    st.map(df_geo,
+           latitude="dealer_geo_lat",
+           longitude="dealer_geo_lon",
+           )
 
     # Display the number of rows selected
     st.header('Number of cars selected')
@@ -160,10 +155,10 @@ with tab1:
     if st.button('Refresh Sample'):
         sample_df = df_geo.sample(sample_size)
     else:
-        print(df_geo.shape)
         sample_df = df_geo.sample(sample_size)
 
-    string_columns = sample_df.select_dtypes(include=['object']).columns.tolist()
+    string_columns = sample_df.select_dtypes(include=['object'])\
+        .columns.tolist()
     if 'car_age_months' not in string_columns and 'car_age_months' in sample_df.columns:
         string_columns.append('car_age_months')
     st.write(sample_df[string_columns], use_container_width=True)
@@ -171,7 +166,9 @@ with tab1:
     st.title("Price vs Province")
     fig, ax = plt.subplots()
     sns.barplot(
-        data=df_geo[['dealer_location', 'car_price', ]].sort_values(by='dealer_location'),
+        data=df_geo[
+            ['dealer_location', 'car_price', ]
+        ].sort_values(by='dealer_location'),
         x='car_price',
         y='dealer_location',
         ax=ax
@@ -181,7 +178,6 @@ with tab1:
     plt.xlabel('Price Range (€)')
     plt.ylabel('')
     st.pyplot(fig)
-
 
     st.title("Price vs Catalogue Price")
     fig, ax = plt.subplots()
@@ -331,7 +327,8 @@ with tab2:
     with col7:
         st.header('Car Emissions Classes')
         fig, ax = plt.subplots()
-        emission_class_counts = filtered_df['car_emissions_class'].value_counts()
+        emission_class_counts = filtered_df['car_emissions_class']\
+            .value_counts()
         sns.barplot(emission_class_counts
                     .reset_index(drop=False)
                     .rename(columns={'car_emissions_class': 'Emissions Class'})
@@ -378,7 +375,7 @@ with tab3:
     # Display the number of rows selected
     st.header('Number of cars selected')
     st.metric(label='', value=df3.shape[0])
-    
+
     # Boxplots grouped by model_name
     st.header('Car packages\'s prices ranges by car model')
     car_model_names = df3['car_model'].value_counts()\
@@ -389,8 +386,9 @@ with tab3:
             st.warning(f"Skipping {model} boxplot due to very few data points")
             continue
 
-        top_car_packages = df3[df3['car_model'] == model]['car_package'].value_counts().head(5)
-        top_car_packages = top_car_packages[top_car_packages>1]
+        top_car_packages = df3[df3['car_model'] ==
+                               model]['car_package'].value_counts().head(5)
+        top_car_packages = top_car_packages[top_car_packages > 1]
         top_car_packages = top_car_packages.index.values
 
         model_df = df3[
@@ -404,9 +402,9 @@ with tab3:
         st.subheader(f'Model: {model}')
         fig, ax = plt.subplots()
         sns.violinplot(data=model_df,
-                        x='car_package', y='car_price',
-                        hue='car_package',
-                        ax=ax)
+                       x='car_package', y='car_price',
+                       hue='car_package',
+                       ax=ax)
         plt.xticks(fontsize=8, rotation=45)
         plt.xlabel('')
         plt.ylabel('Price Range (€)')
@@ -420,23 +418,23 @@ with tab4:
     st.header('Mileage vs. Price')
     fig, ax = plt.subplots()
     hue_parameter = st.selectbox('Select Hue Parameter',
-                                [
-                                    'car_brand',
-                                    'dealer_location',
-                                    'car_registration_year',
-                                    'car_gear_box',
-                                    'car_sale_status',
-                                    'car_history_previous_usage',
-                                    None
-                                ]
-                                )
+                                 [
+                                     'car_brand',
+                                     'dealer_location',
+                                     'car_registration_year',
+                                     'car_gear_box',
+                                     'car_sale_status',
+                                     'car_history_previous_usage',
+                                     None
+                                 ]
+                                 )
     style_parameter = st.selectbox('Select Style Parameter',
-                                ['car_fuel',
+                                   ['car_fuel',
                                     'car_pollution_badge',
                                     'car_seats',
                                     'dealer_name',
                                     None, ]
-                                )
+                                   )
 
     sns.scatterplot(data=filtered_df,
                     x='car_mileage', y='car_price',
@@ -448,13 +446,13 @@ with tab4:
     plt.ylabel('Price')
     sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
     st.pyplot(fig)
-    
+
     st.title("Mileage vs Price")
     fig = sns.pairplot(
-        filtered_df[['car_mileage', 
-                     'car_price', 
-                     'car_catalogue_price', 
-                     'car_martket_price', 
+        filtered_df[['car_mileage',
+                     'car_price',
+                     'car_catalogue_price',
+                     'car_martket_price',
                      'car_registration_year']],
         hue="car_registration_year")
     st.pyplot(fig)

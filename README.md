@@ -11,4 +11,3 @@ Dashboard and ETL with toyota's car offers deployed [here](https://toyota-ocasio
 ### To be continued
 
 ...
-
