@@ -60,7 +60,7 @@ class ToyotaScraper(BaseScraper):
         url = self.get_url()
         headers = self.get_headers()
         params = self.get_params()
-        j = self.get_json(offset=0)
+        j = self.get_json(offset=0, resultCount=self.page_size)
         self.get_page(url=url, headers=headers, params=params, json=j)
         logger.info(f"First page added to responses")
 
@@ -76,7 +76,7 @@ class ToyotaScraper(BaseScraper):
             url = self.get_url()
             headers = self.get_headers()
             params = self.get_params()
-            j = self.get_json(offset=r)
+            j = self.get_json(offset=r, resultCount=self.page_size)
             self.get_page(url=url, headers=headers, params=params, json=j)
             logger.debug(f"Page {r} added to responses")
             time.sleep(0.5)

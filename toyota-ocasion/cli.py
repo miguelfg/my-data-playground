@@ -21,11 +21,12 @@ def cli():
 
 @cli.command()
 @click.option('--limit', '-l', type=int, help='Limit of items to scrape')
+@click.option('--page_size', '-ps', type=int, default=100, help='Number of items per request')
 @click.option('--debug', type=click.Choice(map(str, [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR])), default="20", help='Debug mode')
-def scrape(limit, debug):
+def scrape(limit, page_size, debug):
     logger.setLevel(int(debug))
 
-    scraper = ToyotaScraper(limit=limit)
+    scraper = ToyotaScraper(limit=limit, page_size=page_size)
     output_file = scraper.scrape()
     logger.info(f"Scraped output file: {output_file}")
 
@@ -93,7 +94,7 @@ def f_map(input_file, debug):
 
 @cli.command()
 @click.option('--input_file', '-i', type=str, help='Path to input file')
-@click.option('--db_file', '-db', type=str, default='data/coches.db', help='Path to sqlite database')
+@click.option('--db_file', '-db', type=str, default='streamlits/coches.db', help='Path to sqlite database')
 @click.option('--mode', '-m', type=click.Choice(['replace', 'append']), default='append', help='Mode to save data')
 @click.option('--debug', type=click.Choice(map(str, [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR])), default="20", help='Debug mode')
 def load(input_file, db_file, mode, debug):
@@ -110,5 +111,16 @@ def load(input_file, db_file, mode, debug):
     logger.info(f"Data loaded into sqlite database")
 
 
+@cli.command()
+@click.option('--db_file', '-db', type=str, default='streamlits/coches.db', help='Path to sqlite database')
+@click.option('--debug', type=click.Choice(map(str, [logging.DEBUG, logging.INFO, logging.WARNING, logging.ERROR])), default="20", help='Debug mode')
+def update_last_seen(db_file, debug):
+    logger.setLevel(int(debug))
+
+    loader = BaseLoader()
+    loader.update_last_seen(db_file)
+    logger.info(f"Table 'offers_last_seen_available' has been updated")
+
+    
 if __name__ == '__main__':
     cli()

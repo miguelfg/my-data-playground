@@ -15,13 +15,13 @@ st.set_page_config(layout="wide")
 @st.cache_data
 def load_data():
 
-    data_path = st.secrets["DB_PATH"] or os.path.join('data', 'coches.db')
+    data_path = st.secrets["DB_PATH"] or os.path.join('streamlits', 'coches.db')
 
     # create connection to sqlite db
     conn = sqlite3.connect(data_path)
 
     # Read sqlite db file into a DataFrame
-    df = pd.read_sql_query("SELECT * FROM coches", conn)
+    df = pd.read_sql_query("SELECT * FROM offers_last_seen_available", conn)
 
     # drop full empty columns
     df = df.dropna(axis=1, how='all')
@@ -97,7 +97,7 @@ for col in low_cardinality_cols:
 # Function to filter data based on sidebar filters
 
 
-@st.cache_data
+@st.cache_data(ttl=600)
 def filter_data(df, filters):
     # Filter data based on sidebar filters
     filtered_df = df.copy()

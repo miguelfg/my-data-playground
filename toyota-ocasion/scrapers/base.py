@@ -1,3 +1,4 @@
+import os
 import json
 import time
 import logging
@@ -92,6 +93,9 @@ class BaseScraper:
             f"Error: Could not scrape the URL - response code {response.status_code}")
 
     def save_responses(self):
+        if not os.path.exists(self.ofolder):
+            os.makedirs(self.ofolder)
+
         output_file = f"{self.ofolder}{self.name}-{datetime.now().strftime('%Y%m%d%H%M%S')}.json"
 
         with open(output_file, 'w') as f:

@@ -133,4 +133,8 @@ class ToyotaTransformer(BaseTransformer):
             lambda x: f"https://www.toyota.es/coches-segunda-mano/ficha.toyota-yaris-cross-2024-5p-automatico-hibrido-{x}"
         )
 
+        # add timestamp column
+        df["last_seen"] = pd.Timestamp.now()
+        df["last_seen_date"] = df["last_seen"].dt.strftime("%Y-%m-%d")
+
         return df
