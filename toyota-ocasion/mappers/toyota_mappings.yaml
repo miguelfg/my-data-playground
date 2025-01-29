@@ -55,6 +55,8 @@ columns:
     - dealer-geoLocation.lat
     - dealer-geoLocation.lon
     - car_url
+    - last_seen
+    - last_seen_date
   renamings:
     - car_url -> car_url
     - id-0 -> manufacturer_car_id
@@ -106,6 +108,8 @@ columns:
     - dealer-address.province -> dealer_province
     - dealer-geoLocation.lat -> dealer_geo_lat
     - dealer-geoLocation.lon -> dealer_geo_lon
+    - last_seen -> last_seen
+    - last_seen_date -> last_seen_date
   add:
     - source: Toyota Oficial Ocasión
     - source_url: https://www.toyota.es/

@@ -42,6 +42,9 @@ load-last:
 load-file:
 	poetry run python cli.py load -i "$(FILE)"
 
+update-last-seen:
+	poetry run python cli.py update-last-seen
+
 run-etl:
 	poetry run python cli.py scrape --debug 10
 	poetry run python cli.py parse --debug 10
@@ -57,15 +60,16 @@ run-etl-no-scrape:
 
 db-init:
 	# create database with schema
-	poetry run sqlite3 streamlits/coches.db < create_schema.sql
+	poetry run sqlite3 streamlits/coches.db < loaders/create_schema_history.sql
+	poetry run sqlite3 streamlits/coches.db < loaders/create_schema_last_seen_avail.sql
 
 db-drop-coches:
 	# drop coches table from sqlite3
-	poetry run sqlite3 streamlits/coches.db "drop table coches;"
+	poetry run sqlite3 streamlits/coches.db "drop table offers_history;"
 
 db-flush:
-	# flush coches table from sqlite3
-	poetry run sqlite3 streamlits/coches.db "delete from coches;"
+	# flush offers_history table from sqlite3
+	poetry run sqlite3 streamlits/coches.db "delete from offers_history;"
 
 db-schema-temp:
 	poetry run sqlite3 data/temp.db .schema > data/temp_schema.sql
@@ -74,22 +78,13 @@ db-schema:
 	poetry run sqlite3 streamlits/coches.db .schema
 
 db-count-rows:
-	poetry run sqlite3 streamlits/coches.db "select count(*) from coches;"
+	poetry run sqlite3 streamlits/coches.db "select count(*) from offers_history;"
+	poetry run sqlite3 streamlits/coches.db "select count(*) from offers_last_seen_available;"
 
 db-head:
-	poetry run sqlite3 streamlits/coches.db "select * from coches limit 3;"
+	poetry run sqlite3 streamlits/coches.db "select * from offers_history limit 3;"
 
 db-quick-stats: db-head db-count-rows
 
 run-streamlit:
 	poetry run streamlit run streamlits/app.py
-
-# deploy-streamlit-community:
-# 	# poetry run pip freeze > streamlits/requirements.txt
-# 	# mkdir -p streamlits/data/
-# 	# cp streamlits/coches.db streamlits/data/
-# 	# mkdir -p ../.streamlit/
-# 	# touch ../.streamlit/config.toml
-# 	# touch ../.streamlit/secrets.toml
-# 	# touch ../packages.txt
-# 	# poetry run streamlit deploy streamlits/app.py

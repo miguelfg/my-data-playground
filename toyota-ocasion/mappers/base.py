@@ -88,6 +88,9 @@ class BaseMapper:
             return safe_load(f)
 
     def save(self, df: pd.DataFrame, output_file):
+        if not os.path.exists(self.ofolder):
+            os.makedirs(self.ofolder)
+
         df.to_csv(output_file, index=False)
         logger.info(f"File saved to: {output_file}")
 
