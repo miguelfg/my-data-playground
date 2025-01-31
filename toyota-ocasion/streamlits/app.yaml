@@ -1,0 +1,12 @@
+runtime: python
+env: flex
+
+runtime_config:
+  operating_system: "ubuntu22"
+  python_version: "3.10.12"
+
+entrypoint: DB_PATH=coches.db streamlit run app.py --server.port $PORT
+
+automatic_scaling:
+  max_num_instances: 1
+

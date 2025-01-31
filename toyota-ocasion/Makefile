@@ -88,3 +88,6 @@ db-quick-stats: db-head db-count-rows
 
 run-streamlit:
 	poetry run streamlit run streamlits/app.py
+
+gcp-deploy:
+	cd streamlits/ && gcloud app deploy
