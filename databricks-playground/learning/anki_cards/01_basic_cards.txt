@@ -1,0 +1,52 @@
+# Databricks SQL - Basic Flashcards
+# Format: Front | Back (separated by pipe)
+
+What is a SQL Warehouse in Databricks? | A compute resource that lets you run SQL commands on data objects within Databricks SQL. Compute resources provide processing capabilities in the cloud.
+
+What command optimizes the layout of Delta Lake data? | OPTIMIZE command. It reorganizes data files to improve query performance through bin-packing or Z-ordering.
+
+What is the purpose of the VACUUM command in Delta Lake? | VACUUM removes old data files that are no longer referenced by the Delta table, helping to reduce storage costs. It cleans up files older than the retention period.
+
+How do you view the full history of a Delta table? | Use DESCRIBE HISTORY table_name command. This shows all operations performed on the table in reverse chronological order.
+
+What is Delta Lake Time Travel? | A feature that allows you to query previous versions of a Delta table using either a timestamp or version number.
+
+What does ZORDER BY do in an OPTIMIZE command? | Collocates column information in the same set of files, enabling Delta Lake's data-skipping algorithms to dramatically reduce the amount of data that needs to be read.
+
+What is Liquid Clustering in Delta Lake? | An optimization technique that automatically manages data layout for Delta tables, introduced in Databricks SQL 2023.35 as a Public Preview feature.
+
+What command converts Parquet tables to Delta Lake format? | CONVERT TO DELTA command. Syntax: CONVERT TO DELTA table_name or CONVERT TO DELTA parquet.`/path/to/data/`
+
+What is the purpose of row tracking in Delta Lake? | Enables tracking of individual rows across table versions, useful for change data capture and incremental processing scenarios.
+
+What does the ANALYZE TABLE command do? | Collects statistics on a table to improve query optimization. Can compute Delta statistics for data skipping.
+
+What is the default retention period for VACUUM? | 7 days (168 hours). Files older than this are eligible for deletion unless configured otherwise.
+
+What types of SQL warehouses are available in Databricks? | CLASSIC, PRO, and TYPE_UNSPECIFIED. PRO warehouses offer enhanced performance and features.
+
+What is the purpose of enabling Photon on a warehouse? | Configures the warehouse to use Photon optimized clusters for faster query performance, especially on large datasets.
+
+What does serverless compute mean for SQL warehouses? | The warehouse uses serverless infrastructure that automatically scales and manages resources without user intervention.
+
+How do you enable row tracking on an existing table? | ALTER TABLE table_name SET TBLPROPERTIES (delta.enableRowTracking = true);
+
+What is data skipping in Delta Lake? | An optimization that uses statistics to skip reading data files that don't contain relevant data for a query, improving performance.
+
+What does the FULL clause do in OPTIMIZE? | Optimizes the whole table including data that may have previously been clustered. Only for tables using liquid clustering (Databricks Runtime 16.0+).
+
+What is the minimum configuration for creating a SQL warehouse? | At minimum, you need to specify a name. Other parameters like cluster_size, min_num_clusters, max_num_clusters, and auto_stop_mins are optional.
+
+What does the DESCRIBE DETAIL command show? | Shows detailed metadata about a Delta table including format, ID, location, creation date, number of files, size in bytes, properties, and table features.
+
+What is the difference between SHALLOW and DEEP CLONE? | SHALLOW CLONE creates references to existing data files, while DEEP CLONE copies all data files to create an independent table copy.
+
+What command adds new columns to a Delta table? | ALTER TABLE table_name ADD COLUMNS (col_name data_type [COMMENT col_comment] [FIRST|AFTER colA_name], ...)
+
+How do you replace all columns in a Delta table? | ALTER TABLE table_name REPLACE COLUMNS (col_name1 col_type1 [COMMENT col_comment1], ...)
+
+What is the spot instance policy for SQL warehouses? | Determines whether to use spot instances. Options: COST_OPTIMIZED (prioritizes cost), RELIABILITY_OPTIMIZED (prioritizes reliability), or POLICY_UNSPECIFIED.
+
+What does auto_stop_mins control in SQL warehouses? | The amount of time in minutes that a SQL warehouse must be idle before it is automatically stopped to save costs.
+
+What API endpoint lists all SQL warehouses? | GET /api/2.0/sql/warehouses/

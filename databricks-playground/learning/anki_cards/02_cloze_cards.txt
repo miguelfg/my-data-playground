@@ -1,0 +1,84 @@
+# Databricks SQL - Cloze Deletion Flashcards
+# Format: Text with {{c1::answer}} for cloze deletions
+
+The {{c1::OPTIMIZE}} command reorganizes data files in a Delta Lake table to improve query performance.
+
+To query a Delta table at a specific version, use {{c1::SELECT * FROM table_name VERSION AS OF 123}}
+
+The syntax for querying a table at a specific timestamp is {{c1::SELECT * FROM table_name TIMESTAMP AS OF '2018-10-18T22:15:12.013Z'}}
+
+An alternative timestamp syntax uses {{c1::@}} symbol: SELECT * FROM table_name{{c1::@20190101000000000}}
+
+To view the last operation on a Delta table, use {{c1::DESCRIBE HISTORY table_name LIMIT 1}}
+
+The {{c1::ZORDER BY}} clause collocates column information in the same set of files for better data skipping.
+
+Delta Lake stores {{c1::statistics}} to enable data skipping and improve query performance.
+
+The {{c1::VACUUM}} command removes old data files that are no longer referenced by a Delta table.
+
+To manually compute Delta statistics, run {{c1::ANALYZE TABLE table_name COMPUTE DELTA STATISTICS}}
+
+A SQL warehouse is created using the {{c1::POST /api/2.0/sql/warehouses/}} API endpoint.
+
+To start a SQL warehouse, use {{c1::POST /api/2.0/sql/warehouses/{id}/start}}
+
+The {{c1::CONVERT TO DELTA}} command performs in-place conversion of Parquet tables to Delta Lake format.
+
+Bin-packing optimization is {{c1::idempotent}}, while Z-Ordering aims to be {{c1::incremental}}.
+
+To enable row tracking, set the table property {{c1::delta.enableRowTracking}} to {{c1::true}}.
+
+The minimum reader version compatible with a table is shown by {{c1::minReaderVersion}} in DESCRIBE DETAIL output.
+
+To override default statistics collection, set {{c1::delta.dataSkippingStatsColumns}} table property.
+
+{{c1::Liquid clustering}} automatically manages data layout and was introduced in Databricks SQL version {{c2::2023.35}}.
+
+The {{c1::RESTORE}} command allows you to restore a Delta table to a previous version.
+
+To add a column at a specific position, use {{c1::ALTER TABLE table_name ADD COLUMNS (col_name data_type AFTER existing_col)}}
+
+The {{c1::FULL}} clause in OPTIMIZE is only available for tables using {{c2::liquid clustering}}.
+
+Delta Lake supports time travel using either {{c1::VERSION AS OF}} or {{c2::TIMESTAMP AS OF}} syntax.
+
+The default auto-stop time for SQL warehouses can be set using {{c1::auto_stop_mins}} parameter.
+
+To enable Photon optimization, set {{c1::enable_photon}} to {{c2::true}} when creating a warehouse.
+
+{{c1::Serverless compute}} automatically scales warehouse resources without manual intervention.
+
+The {{c1::CLONE}} command extends CONVERT TO DELTA with incremental support for Parquet and Iceberg tables.
+
+To filter statistics columns, use {{c1::delta.dataSkippingStatsColumns}} in ALTER TABLE SET TBLPROPERTIES.
+
+The {{c1::DESCRIBE DETAIL}} command shows metadata like number of files, data size, and table properties.
+
+{{c1::INSERT REPLACE}} commands selectively replace data in Delta tables based on matching conditions.
+
+The spot instance policy {{c1::COST_OPTIMIZED}} prioritizes cost savings over reliability.
+
+To view warehouse permissions, use {{c1::GET /api/2.0/sql/warehouses/{id}/permissions}}
+
+Delta statistics help with {{c1::data skipping}} by storing min/max values for columns.
+
+The {{c1::REORG TABLE}} command reorganizes data layout for better performance.
+
+To drop clustering strategy, use {{c1::ALTER TABLE table_name CLUSTER BY NONE}}
+
+{{c1::FSCK REPAIR TABLE}} checks and repairs Delta table inconsistencies.
+
+The {{c1::GENERATE}} command creates metadata files for Delta tables.
+
+Unity Catalog supports {{c1::optimized writes}} for INSERT statements and CTAS operations.
+
+To query VACUUM audit history, check {{c1::DESCRIBE HISTORY}} output with vacuum.logging.enabled set to true.
+
+Delta Lake streaming queries now push down {{c1::partition filters}} before rate limiting for improved utilization.
+
+The {{c1::warehouse_type}} parameter accepts CLASSIC, PRO, or TYPE_UNSPECIFIED values.
+
+{{c1::TableFeatures}} in DESCRIBE DETAIL output lists features supported by the Delta table.
+
+Clustering columns are shown in {{c1::clusteringColumns}} field of DESCRIBE DETAIL output.

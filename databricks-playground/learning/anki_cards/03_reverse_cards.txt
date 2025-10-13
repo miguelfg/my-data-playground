@@ -1,0 +1,102 @@
+# Databricks SQL - Reverse Flashcards
+# Format: Front | Back (bidirectional learning)
+
+OPTIMIZE command | What command reorganizes Delta Lake data files for better performance?
+
+DESCRIBE HISTORY | What command shows the complete operation history of a Delta table?
+
+VERSION AS OF | What SQL syntax queries a specific version of a Delta table?
+
+TIMESTAMP AS OF | What SQL syntax queries a Delta table at a specific point in time?
+
+ZORDER BY | What clause in OPTIMIZE collocates data by specific columns?
+
+VACUUM | What command removes old unreferenced files from a Delta table?
+
+CONVERT TO DELTA | What command converts Parquet tables to Delta Lake format?
+
+SQL Warehouse | What is the compute resource for running SQL commands in Databricks SQL?
+
+ANALYZE TABLE COMPUTE DELTA STATISTICS | What command manually recomputes data skipping statistics?
+
+Liquid Clustering | What Delta Lake feature automatically manages data layout optimization?
+
+Row Tracking | What feature enables tracking individual rows across Delta table versions?
+
+delta.enableRowTracking | What table property enables row tracking in Delta Lake?
+
+Data Skipping | What optimization uses statistics to skip irrelevant data files during queries?
+
+Time Travel | What Delta Lake feature allows querying historical versions of tables?
+
+DESCRIBE DETAIL | What command shows detailed metadata about a Delta table?
+
+POST /api/2.0/sql/warehouses/ | What API endpoint creates a new SQL warehouse?
+
+GET /api/2.0/sql/warehouses/ | What API endpoint lists all SQL warehouses?
+
+Photon | What Databricks feature provides optimized query performance on large datasets?
+
+Serverless Compute | What compute option automatically scales SQL warehouse resources?
+
+CLONE | What command creates a copy of a table (shallow or deep)?
+
+ALTER TABLE ADD COLUMNS | What command adds new columns to a Delta table schema?
+
+ALTER TABLE REPLACE COLUMNS | What command replaces all columns in a Delta table?
+
+auto_stop_mins | What parameter controls automatic stopping of idle SQL warehouses?
+
+enable_photon | What parameter enables Photon optimization for a warehouse?
+
+delta.dataSkippingStatsColumns | What property specifies which columns to collect statistics for?
+
+RESTORE | What command reverts a Delta table to a previous version?
+
+Unity Catalog | What Databricks feature provides centralized metadata and governance?
+
+Bin-packing | What idempotent optimization technique reorganizes small files?
+
+@ syntax (table@version) | What shorthand syntax queries specific Delta table versions?
+
+FULL clause in OPTIMIZE | What clause optimizes entire tables with liquid clustering?
+
+min_num_clusters | What warehouse parameter sets the minimum number of maintained clusters?
+
+max_num_clusters | What warehouse parameter limits autoscaler cluster creation?
+
+cluster_size | What warehouse parameter determines the size of allocated clusters?
+
+warehouse_type | What parameter specifies CLASSIC, PRO, or TYPE_UNSPECIFIED warehouse types?
+
+spot_instance_policy | What parameter controls use of spot instances (COST_OPTIMIZED or RELIABILITY_OPTIMIZED)?
+
+PARTITION clause in ANALYZE TABLE | What clause allows computing statistics for specific partitions?
+
+NOSCAN option | What ANALYZE TABLE option collects statistics without scanning data?
+
+FOR COLUMNS | What ANALYZE TABLE clause specifies which columns to analyze?
+
+INSERT REPLACE | What SQL command selectively replaces data based on matching conditions?
+
+REORG TABLE | What command reorganizes Delta table layout for performance?
+
+FSCK REPAIR TABLE | What command checks and repairs Delta table inconsistencies?
+
+GENERATE command | What command creates metadata files for Delta tables?
+
+CACHE SELECT | What command caches query results for faster repeated access?
+
+partition filters | What optimization is now pushed down before rate limiting in streaming queries?
+
+TableFeatures | What DESCRIBE DETAIL field lists supported Delta table features?
+
+clusteringColumns | What field shows which columns are used for liquid clustering?
+
+minReaderVersion | What field indicates minimum Delta Lake reader version compatibility?
+
+minWriterVersion | What field indicates minimum Delta Lake writer version compatibility?
+
+sizeInBytes | What DESCRIBE DETAIL field shows the latest snapshot size?
+
+numFiles | What field shows the number of files in the latest table version?

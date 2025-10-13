@@ -1,0 +1,100 @@
+# Databricks SQL - Code Example Flashcards
+# Format: Question | Code Answer
+
+How do you optimize an entire Delta table? | OPTIMIZE events;
+
+How do you optimize a table with liquid clustering? | OPTIMIZE events FULL;
+
+How do you optimize only recent data (last day)? | OPTIMIZE events WHERE date >= current_timestamp() - INTERVAL 1 day;
+
+How do you optimize with Z-ordering by eventType? | OPTIMIZE events WHERE date >= '2017-01-01' ZORDER BY (eventType);
+
+How do you query a table at version 123? | SELECT * FROM people10m VERSION AS OF 123;
+
+How do you query a table at a specific timestamp? | SELECT * FROM people10m TIMESTAMP AS OF '2018-10-18T22:15:12.013Z';
+
+How do you use @ syntax for version querying? | SELECT * FROM people10m@v123;
+
+How do you use @ syntax for timestamp querying? | SELECT * FROM people10m@20190101000000000;
+
+How do you get the full history of a table? | DESCRIBE HISTORY table_name;
+
+How do you get only the last operation on a table? | DESCRIBE HISTORY table_name LIMIT 1;
+
+How do you enable row tracking on a table? | ALTER TABLE table_name SET TBLPROPERTIES (delta.enableRowTracking = true);
+
+How do you disable row tracking on a table? | ALTER TABLE table_name SET TBLPROPERTIES (delta.enableRowTracking = false);
+
+How do you manually compute Delta statistics? | ANALYZE TABLE table_name COMPUTE DELTA STATISTICS;
+
+How do you convert Parquet to Delta Lake? | CONVERT TO DELTA parquet.`/path/to/parquet/data/`;
+
+How do you convert an Iceberg table to Delta? | CONVERT TO DELTA iceberg.`/path/to/iceberg/data/`;
+
+How do you get detailed metadata about a table? | DESCRIBE DETAIL '/data/events/' or DESCRIBE DETAIL eventsTable;
+
+How do you add a new column to a table? | ALTER TABLE table_name ADD COLUMNS (col_name data_type COMMENT 'description');
+
+How do you add a column after an existing column? | ALTER TABLE table_name ADD COLUMNS (new_col INT AFTER existing_col);
+
+How do you replace all columns in a table? | ALTER TABLE table_name REPLACE COLUMNS (col1 INT, col2 STRING, col3 DOUBLE);
+
+How do you set custom statistics columns? | ALTER TABLE table_name SET TBLPROPERTIES('delta.dataSkippingStatsColumns' = 'col1, col2, col3');
+
+How do you create a SQL warehouse via CLI? | databricks warehouses create --json "<pipeline definition or json file path>";
+
+How do you start a SQL warehouse via API? | POST /api/2.0/sql/warehouses/{id}/start
+
+How do you stop a SQL warehouse via API? | POST /api/2.0/sql/warehouses/{id}/stop
+
+How do you list all SQL warehouses via API? | GET /api/2.0/sql/warehouses/
+
+How do you get warehouse information? | GET /api/2.0/sql/warehouses/{id}
+
+How do you delete a SQL warehouse? | DELETE /api/2.0/sql/warehouses/{id}
+
+How do you update a SQL warehouse? | PATCH /api/2.0/sql/warehouses/{id}
+
+How do you set clustering columns? | ALTER TABLE table_name CLUSTER BY (col_name1, col_name2);
+
+How do you drop clustering from a table? | ALTER TABLE table_name CLUSTER BY NONE;
+
+How do you restore a table to a timestamp? | RESTORE TABLE table_name TO TIMESTAMP AS OF '2023-01-01 00:00:00';
+
+How do you restore a table to a version? | RESTORE TABLE table_name TO VERSION AS OF 42;
+
+How do you add a nested column to a struct? | ALTER TABLE table_name ADD COLUMNS (struct_col.nested_col INT);
+
+How do you create a warehouse with Photon? | POST /api/2.0/sql/warehouses/ with body: {"name": "my-warehouse", "enable_photon": true}
+
+How do you create a serverless warehouse? | POST /api/2.0/sql/warehouses/ with body: {"name": "my-warehouse", "enable_serverless_compute": true}
+
+How do you set warehouse auto-stop to 60 minutes? | Set "auto_stop_mins": 60 in warehouse configuration
+
+How do you create a PRO warehouse? | POST /api/2.0/sql/warehouses/ with body: {"name": "my-warehouse", "warehouse_type": "PRO"}
+
+How do you configure cost-optimized spot instances? | Set "spot_instance_policy": "COST_OPTIMIZED" in warehouse configuration
+
+How do you analyze a table with no data scanning? | ANALYZE TABLE table_name COMPUTE STATISTICS NOSCAN;
+
+How do you analyze specific columns? | ANALYZE TABLE table_name COMPUTE STATISTICS FOR COLUMNS col1, col2, col3;
+
+How do you analyze all columns? | ANALYZE TABLE table_name COMPUTE STATISTICS FOR ALL COLUMNS;
+
+How do you analyze a specific partition? | ANALYZE TABLE table_name PARTITION (partition_col = 'value') COMPUTE STATISTICS;
+
+How do you create a deep clone? | CREATE TABLE target_table DEEP CLONE source_table;
+
+How do you create a shallow clone? | CREATE TABLE target_table SHALLOW CLONE source_table;
+
+How do you clone a specific version? | CREATE TABLE target_table SHALLOW CLONE source_table VERSION AS OF 10;
+
+How do you vacuum a table? | VACUUM table_name;
+
+How do you vacuum with a custom retention? | VACUUM table_name RETAIN 168 HOURS;
+
+How do you vacuum a specific path? | VACUUM delta.`/path/to/table/` RETAIN 100 HOURS;
+
+How do you insert and replace based on ID match? | INSERT REPLACE INTO my_table USING source_table ON my_table.id = source_table.id SELECT source_table.*;
+
+How do you set warehouse min/max clusters? | Set "min_num_clusters": 1, "max_num_clusters": 10 in warehouse configuration

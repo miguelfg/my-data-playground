@@ -1,0 +1,84 @@
+# Databricks SQL - Concept & Architecture Flashcards
+# Format: Question | Answer
+
+What are the benefits of OPTIMIZE? | Improves query performance by: 1) Compacting small files through bin-packing, 2) Reducing file I/O overhead, 3) Enabling better data skipping with Z-ordering, 4) Improving caching efficiency.
+
+What is the difference between bin-packing and Z-ordering? | Bin-packing consolidates small files into larger ones (idempotent operation). Z-ordering collocates related data by specific columns for data skipping (incremental operation).
+
+When should you use liquid clustering vs ZORDER? | Liquid clustering: Dynamic workloads with changing query patterns, automatic management. ZORDER: Static query patterns with known access patterns, manual control over layout.
+
+What are the trade-offs of Time Travel? | Benefits: Query historical data, audit changes, recover from mistakes. Trade-offs: Requires storage for old files, VACUUM needed to reclaim space, performance impact on very old versions.
+
+How does data skipping improve performance? | Stores min/max statistics for columns. During queries, skips entire files where statistics prove no relevant data exists, reducing I/O and processing time dramatically.
+
+What statistics does Delta Lake collect by default? | First 32 columns (by table order): min/max values, null counts, row counts per file. Used for data skipping and query optimization.
+
+When should you customize dataSkippingStatsColumns? | When: 1) Important columns are beyond the 32nd column, 2) Query patterns focus on specific columns, 3) Need to optimize specific predicates, 4) Reduce statistics overhead.
+
+What is the purpose of row tracking? | Enables: 1) Change Data Capture (CDC), 2) Incremental processing, 3) Row-level lineage, 4) Fine-grained updates tracking across versions.
+
+How does VACUUM impact Time Travel? | VACUUM permanently deletes old data files, making those versions unavailable for Time Travel queries. Default retention is 7 days.
+
+What is the relationship between versions and timestamps? | Each Delta operation creates a new version with a timestamp. You can query by either: version number (absolute) or timestamp (point-in-time).
+
+What are SQL Warehouse sizing considerations? | Factors: 1) Concurrent users/queries, 2) Query complexity, 3) Data volume, 4) Performance SLAs, 5) Cost budget. Sizes: X-Small to 4X-Large.
+
+What's the difference between CLASSIC and PRO warehouses? | PRO: Enhanced performance, better scaling, more features, higher cost. CLASSIC: Standard performance, basic features, lower cost. PRO recommended for production workloads.
+
+When should you enable Photon? | Enable for: 1) Large-scale data processing, 2) Complex queries, 3) Performance-critical workloads. Provides significant speedup on compatible operations.
+
+What is serverless compute? | Databricks manages infrastructure completely. Benefits: Instant startup, automatic scaling, no resource management, pay-per-second billing. Limitations: Cold starts, less control.
+
+How does autoscaling work for SQL warehouses? | Automatically adds clusters (up to max_num_clusters) when queries queue. Removes clusters when idle. Maintains minimum (min_num_clusters) for faster response.
+
+What is the purpose of auto_stop_mins? | Automatically stops warehouse after specified idle time to reduce costs. Balances availability vs cost. Typical values: 10-60 minutes.
+
+When should you use spot instances? | Use COST_OPTIMIZED for: Non-critical workloads, batch processing, development/testing. Use RELIABILITY_OPTIMIZED for: Production, low-latency, interactive queries.
+
+What is schema evolution in Delta Lake? | Ability to modify table schema over time: ADD COLUMNS (append), REPLACE COLUMNS (restructure), ALTER COLUMN (modify types/comments), supporting forward/backward compatibility.
+
+How does CONVERT TO DELTA preserve data? | In-place conversion: No data movement, preserves partitioning, maintains file structure, creates Delta metadata, enables immediate Delta features.
+
+What is the difference between CLONE and CONVERT? | CONVERT: In-place transformation (Parquet/Iceberg → Delta). CLONE: Creates new table copy (SHALLOW references, DEEP copies). Use CONVERT for migration, CLONE for copies.
+
+What are Delta table features? | Capabilities tracked in table metadata: Column mapping, deletion vectors, change data feed, row tracking, liquid clustering. Controls compatibility with readers/writers.
+
+How do minReaderVersion and minWriterVersion work? | Define minimum Delta Lake protocol versions needed to read/write table. Prevents incompatible clients from corrupting data. Automatically incremented when features require it.
+
+What is the Delta transaction log? | JSON-based log storing all table operations. Provides ACID guarantees, enables time travel, tracks metadata changes. Located in _delta_log directory.
+
+How does Delta Lake ensure ACID properties? | Atomicity: All-or-nothing commits. Consistency: Validation before commit. Isolation: Optimistic concurrency control. Durability: Transaction log persistence.
+
+What is the RESTORE command used for? | Reverts table to previous version/timestamp. Use cases: Undo mistakes, recover from bad writes, rollback failed migrations, restore deleted data (within VACUUM retention).
+
+When should you run ANALYZE TABLE? | After: Schema changes, large data loads, statistics property updates, partition additions. Improves query performance through updated statistics.
+
+What is the NOSCAN option in ANALYZE TABLE? | Collects basic statistics from existing metadata without reading data files. Fast but less accurate. Use for quick refreshes on large tables.
+
+How does Unity Catalog integrate with SQL? | Provides: Centralized metadata, fine-grained access control, data lineage, audit logging, cross-workspace sharing. Enhanced security and governance.
+
+What are optimized writes? | Automatically creates right-sized files during writes (INSERTs, CTAS). Reduces need for OPTIMIZE. Enabled by default in SQL warehouses, optional in Runtime.
+
+How do partition filters improve streaming? | Pushed down before rate limiting in Delta streaming. Reduces data scanned early in pipeline, improving throughput and resource utilization.
+
+What is the purpose of REORG TABLE? | Reorganizes table layout for better performance. Similar to OPTIMIZE but with different optimization strategies. Specific to certain Delta features.
+
+When should you use FSCK REPAIR TABLE? | Repairs inconsistencies between Delta log and data files. Use after: Cloud storage failures, manual file modifications, corruption issues. Rarely needed.
+
+What does GENERATE command do? | Creates/updates metadata files: _delta_log checkpoints, Parquet metadata, statistics. Useful for maintenance and recovery scenarios.
+
+How does CACHE SELECT improve performance? | Caches query results in memory for faster repeated access. Useful for: Dashboards, repeated queries, aggregations. Managed automatically or manually.
+
+What are clustering columns? | Columns specified in CLUSTER BY clause. Used by liquid clustering to automatically organize data. Choose based on common filter/join predicates.
+
+How do you choose between partitioning and clustering? | Partitioning: Low cardinality (dates, regions), static patterns. Clustering: High cardinality, dynamic patterns, multiple access patterns. Clustering more flexible.
+
+What is the @ syntax advantage? | Shorter, more concise than VERSION AS OF / TIMESTAMP AS OF. Easier to use in complex queries. Same functionality, different syntax.
+
+How does INSERT REPLACE work? | Selectively replaces rows based on matching conditions (USING...ON). More efficient than DELETE + INSERT. Atomic operation. Available in Runtime 17.2+.
+
+What API operations manage warehouse lifecycle? | Create, Start, Stop, Delete, Update. Also: Get info, List all, Manage permissions. Full lifecycle management through REST API or CLI.
+
+How do warehouse permissions work? | Role-based access control. Levels: CAN_USE (run queries), CAN_MANAGE (configure warehouse). Integrated with Unity Catalog for centralized governance.
+
+What is workspace configuration? | Global settings for SQL warehouses workspace-wide. Controls: Default warehouse settings, security policies, resource limits. Set via API or UI.
