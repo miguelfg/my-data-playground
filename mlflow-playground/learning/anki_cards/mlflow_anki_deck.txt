@@ -1,0 +1,47 @@
+# MLflow Anki Deck: Machine Learning Lifecycle Management
+
+# BASIC CARDS
+# Definitions and Concepts
+What is MLflow?;An open-source platform for managing the end-to-end machine learning lifecycle, including experiment tracking, model management, and deployment
+
+What are the four main components of MLflow?;1. Tracking: Logging parameters, metrics, and artifacts<br>2. Projects: Packaging ML code in a reusable format<br>3. Models: Standardized model packaging and deployment<br>4. Model Registry: Centralized model versioning and management
+
+What is MLflow Tracking?;A component that allows logging and comparing parameters, code versions, metrics, and output files when running machine learning code
+
+What is an MLflow Experiment?;A top-level container for tracking and organizing MLflow runs, which are individual executions of machine learning code
+
+What is an MLflow Run?;A single execution of machine learning code, during which metrics, parameters, and artifacts are logged for tracking and comparison
+
+# Practical Usage
+How do you start an MLflow experiment in Python?;```python
+import mlflow
+mlflow.set_experiment("experiment_name")
+with mlflow.start_run():
+    # Your ML training code here
+    mlflow.log_param("learning_rate", 0.01)
+    mlflow.log_metric("accuracy", 0.95)
+```
+
+How can you log a model in MLflow?;```python
+with mlflow.start_run():
+    # Train your model
+    mlflow.sklearn.log_model(model, "model_name")
+    # Or for other frameworks
+    mlflow.pytorch.log_model(model, "pytorch_model")
+```
+
+What is MLflow Autologging?;A feature that automatically logs metrics, parameters, and models for supported ML frameworks like scikit-learn, XGBoost, and PyTorch without manual logging code
+
+# Best Practices
+When should you use MLflow Tracking?;When you want to:<br>- Compare different model runs<br>- Track hyperparameters<br>- Log model performance metrics<br>- Keep a history of experiments<br>- Reproduce machine learning experiments
+
+# Code Patterns
+How do you configure MLflow Tracking URI?;```python
+# Local tracking
+mlflow.set_tracking_uri("./mlruns")
+
+# Remote tracking (e.g., SQLAlchemy database)
+mlflow.set_tracking_uri("sqlite:///mlflow.db")
+# Or with a remote server
+mlflow.set_tracking_uri("http://tracking-server:5000")
+```

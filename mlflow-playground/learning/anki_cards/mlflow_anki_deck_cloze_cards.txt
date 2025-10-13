@@ -1,0 +1,33 @@
+# CLOZE DELETION CARDS
+# Core Concepts
+The primary purpose of MLflow [...] is to manage the machine learning lifecycle.;Tracking
+
+In MLflow, a single training execution is called an [...];run
+
+MLflow allows logging of [...], [...], and [...] during model training.;parameters, metrics, artifacts
+
+The MLflow component used for standardizing model packaging and deployment is called [...];Models
+
+Autologging in MLflow automatically tracks metrics and parameters for [...] ML frameworks;supported
+
+The [...] component of MLflow provides a centralized place for versioning and managing machine learning models.;Model Registry
+
+MLflow can log models from different ML frameworks like [...], [...], and [...];scikit-learn, PyTorch, TensorFlow
+
+# Advanced Concepts
+In MLflow, setting the tracking URI to [...] allows storing experiment data in a local directory.;./mlruns
+
+MLflow projects can be packaged and shared using [...] or [...];conda environments, Docker containers
+
+The Model Registry supports [...] like staging, archiving, and transitioning between model versions.;lifecycle management
+
+# Technical Details
+To start an MLflow experiment, you first set the experiment with [...] and then use [...] to track a run.;mlflow.set_experiment(), mlflow.start_run()
+
+Logging a scikit-learn model in MLflow is done using the [...] method.;mlflow.sklearn.log_model()
+
+# Workflow Patterns
+The typical MLflow workflow involves [...], [...], and [...];experiment tracking, model logging, model registry
+
+# Integration Patterns
+MLflow can be integrated with [...] platforms for enhanced machine learning lifecycle management.;Databricks, Azure ML, AWS SageMaker
