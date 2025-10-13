@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLflow Interview Questions & Answers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .slide-container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .slide {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px;
+            max-width: 1100px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide.hidden {
+            display: none !important;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h1 {
+            color: #667eea;
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .slide h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            color: #764ba2;
+            font-size: 1.3em;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        .slide p, .slide ul, .slide ol {
+            color: #333;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .slide ul, .slide ol {
+            margin-left: 25px;
+        }
+
+        .slide li {
+            margin-bottom: 10px;
+        }
+
+        pre {
+            background: #f5f5f5;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+        }
+
+        pre code {
+            color: #333;
+        }
+
+        .source {
+            background: #f0f0f0;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .source a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .source a:hover {
+            text-decoration: underline;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-number {
+            color: #667eea;
+            font-size: 1em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.3em;
+            margin-top: 10px;
+        }
+
+        .title-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        strong {
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <!-- Slide 0: Title -->
+        <div class="slide active title-slide" data-is-title="true">
+            <h1>MLflow Interview Questions & Answers</h1>
+            <p class="subtitle">14 Essential Questions for ML Engineers</p>
+            <p class="subtitle" style="margin-top: 40px; font-size: 1em;">Navigate with arrow buttons below or use ← → keys</p>
+        </div>
+
+        <!-- Slide 1 -->
+        <div class="slide">
+            <h2>1. What is MLflow and what are its core components?</h2>
+            <h3>Answer:</h3>
+            <p>MLflow is an open-source platform for managing the end-to-end machine learning lifecycle, including experiment tracking, model registry, deployment, and tracing capabilities for both traditional ML and LLM/GenAI applications.</p>
+            
+            <h3>Core Components:</h3>
+            <ul>
+                <li><strong>MLflow Tracking:</strong> Logs parameters, metrics, code versions, and artifacts</li>
+                <li><strong>MLflow Models:</strong> Standard format for packaging ML models with metadata</li>
+                <li><strong>MLflow Model Registry:</strong> Centralized store for managing model lifecycle</li>
+                <li><strong>MLflow Projects:</strong> Packaging format for reproducible runs</li>
+                <li><strong>MLflow Tracing:</strong> Observability for LLM/agent applications</li>
+            </ul>
+            
+            <div class="source">
+                Source: <a href="https://mlflow.org/docs/latest/ml/getting-started/" target="_blank">MLflow Documentation</a>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide">
+            <h2>2. How do you log parameters, metrics, and artifacts?</h2>
+            <h3>Answer:</h3>
+            <pre><code>import mlflow
+
+with mlflow.start_run():
+    # Log parameters (inputs)
+    mlflow.log_param("learning_rate", 0.01)
+    mlflow.log_params({"epochs": 100, "batch_size": 32})
+    
+    # Log metrics (outputs)
+    mlflow.log_metric("accuracy", 0.95)
+    mlflow.log_metric("loss", 0.05, step=10)
+    
+    # Log artifacts (files)
+    mlflow.log_artifact("model.pkl")
+    mlflow.log_artifacts("outputs/")  # directory</code></pre>
+            
+            <h3>Key Distinction:</h3>
+            <ul>
+                <li><strong>Parameters:</strong> Inputs (hyperparameters)</li>
+                <li><strong>Metrics:</strong> Numerical outputs tracked over time</li>
+                <li><strong>Artifacts:</strong> Files (models, plots, data)</li>
+            </ul>
+            
+            <div class="source">
+                Source: <a href="https://mlflow.org/docs/latest/ml/tracking/tracking-api/" target="_blank">MLflow Tracking API</a>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide">
+            <h2>3. What is MLflow autologging?</h2>
+            <h3>Answer:</h3>
+            <p>Autologging automatically captures model details, metrics, parameters, and artifacts with a single line of code for popular ML frameworks.</p>
+            
+            <pre><code>import mlflow
+mlflow.sklearn.autolog()  # Enable for scikit-learn
+
+# Training happens normally - MLflow logs everything
+model.fit(X_train, y_train)</code></pre>
+            
+            <h3>When to Use:</h3>
+            <ul>
+                <li>✅ Rapid prototyping and experimentation</li>
+                <li>✅ Standardized logging across teams</li>
+                <li>✅ Framework defaults capture what you need</li>
+            </ul>
+            
+            <h3>When NOT to Use:</h3>
+            <ul>
+                <li>❌ Need custom metrics or specific logging logic</li>
+                <li>❌ Framework not supported</li>
+                <li>❌ Performance-critical pipelines (adds overhead)</li>
+            </ul>
+            
+            <div class="source">
+                Source: <a href="https://mlflow.org/docs/latest/ml/tracking/autolog/" target="_blank">MLflow Autologging</a>
+            </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="slide">
+            <h2>4. Experiment vs Run in MLflow</h2>
+            <h3>Answer:</h3>
+            <ul>
+                <li><strong>Experiment:</strong> Organizational unit grouping related runs (e.g., "Customer Churn Model v2")</li>
+                <li><strong>Run:</strong> Single execution of model code with specific parameters, metrics, and artifacts</li>
+            </ul>
+            
+            <p style="margin-top: 20px;"><strong>Think of it:</strong> Experiments are folders, runs are individual files.</p>
+            
+            <pre><code>mlflow.set_experiment("fraud-detection")  # Set/create experiment
+
+with mlflow.start_run(run_name="baseline-model"):  # Create run
+    # Training code here
+    pass</code></pre>
+            
+            <p>One experiment contains many runs for comparison and analysis.</p>
+            
+            <div class="source">
+                Source: <a href="https://mlflow.org/docs/latest/ml/tracking/quickstart/" target="_blank">MLflow Tracking Concepts</a>
+            </div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="slide">
+            <h2>5. MLflow Model Registry & Stages</h2>
+            <h3>Answer:</h3>
+            <p>Model Registry is a centralized model store with APIs and UI for managing the model lifecycle from experimentation to production.</p>
+            
+            <h3>Model Stages:</h3>
+            <ul>
+                <li><strong>None:</strong> Newly registered</li>
+                <li><strong>Staging:</strong> Being tested/validated</li>
+                <li><strong>Production:</strong> Deployed and serving predictions</li>
+                <li><strong>Archived:</strong> Deprecated but retained</li>
+            </ul>
+            
+            <pre><code># Register model
+mlflow.register_model("runs:/abc123/model", "FraudDetector")
+
+# Transition to production
+client = mlflow.MlflowClient()
+client.transition_model_version_stage(
+    name="FraudDetector", 
+    version=3, 
+    stage="Production"
+)</code></pre>
+            
+            <div class="source">
+                Source: <a href="https://mlflow.org/docs/latest/ml/model-registry/" target="_blank">MLflow Model Registry</a>
+            </div>
+        </div>
+
+        <!-- Slide 6 -->
+        <div class="slide">
+            <h2>6. What are MLflow model flavors?</h2>
+            <h3>Answer:</h3>
+            <p>Model flavors are standardized interfaces for different frameworks and deployment targets.</p>
+            
+            <h3>Types of Flavors:</h3>
+            <ul>
+                <li><strong>Framework-specific:</strong> sklearn, pytorch, tensorflow, xgboost</li>
+                <li><strong>Universal:</strong> python_function (pyfunc) - works everywhere</li>
+                <li><strong>Specialized:</strong> spark, onnx, transformers</li>
+            </ul>
+            
+            <pre><code># Save with multiple flavors
+mlflow.sklearn.log_model(
+    model, 
+    "model",
+    signature=signature,
+    registered_model_name="MyModel"
+)
+# Automatically includes sklearn AND pyfunc flavors</code></pre>
+            
+            <p><strong>Why it matters:</strong> Pyfunc provides a consistent predict() interface regardless of underlying framework, enabling framework-agnostic deployment.</p>
+            
+            <div class="source">
+                Source: <a href="https://mlflow.org/docs/latest/ml/models/" target="_blank">MLflow Models</a>
+            </div>
+        </div>
+
+        <!-- Slide 7 -->
+        <div class="slide">
+            <h2>7. Loading models for inference</h2>
+            <h3>Answer:</h3>
+            <p>Multiple approaches depending on use case:</p>
+            
+            <pre><code># Method 1: Load by run ID
+model = mlflow.pyfunc.load_model("runs:/abc123/model")
+
+# Method 2: Load from Model Registry
+model = mlflow.pyfunc.load_model("models:/FraudDetector/Production")
+
+# Method 3: Load with specific flavor
+model = mlflow.sklearn.load_model("runs:/abc123/model")
+
+# Make predictions
+predictions = model.predict(new_data)</code></pre>
+            
+            <p><strong>Best practice:</strong> Use Model Registry paths (<code>models:/</code>) for production systems as they abstract away run IDs and enable version management.</p>
+            
+            <div class="source">
+                Source: <a href="https://mlflow.org/docs/latest/ml/models/" target="_blank">MLflow Models Guide</a>
+            </div>
+        </div>
+
+        <!-- Slide 8 -->
+        <div class="slide">
+            <h2>8. Model signatures - why important?</h2>
+            <h3>Answer:</h3>
+            <p>A model signature defines the input/output schema (column names, data types) for a model.</p>
+            
+            <pre><code>from mlflow.models import infer_signature
+
+signature = infer_signature(X_train, model.predict(X_train))
+mlflow.sklearn.log_model(model, "model", signature=signature)</code></pre>
+            
+            <h3>Why Critical:</h3>
+            <ul>
+                <li><strong>Validation:</strong> Catches data schema mismatches at serving time</li>
+                <li><strong>Documentation:</strong> Self-documents expected inputs/outputs</li>
+                <li><strong>Deployment:</strong> Required by many serving platforms</li>
+                <li><strong>Type safety:</strong> Prevents silent errors from incorrect dtypes</li>
+            </ul>
+            
+            <div class="source">
+                Source: <a href="https://mlflow.org/docs/latest/ml/models/" target="_blank">Model Signatures</a>
+            </div>
+        </div>
+
+        <!-- Slide 9 -->
+        <div class="slide">
+            <h2>9. Setting up MLflow Tracking Server</h2>
+            <h3>Basic (local development):</h3>
+            <pre><code>mlflow server --host 0.0.0.0 --port 5000</code></pre>
+            
+            <h3>Production setup:</h3>
+            <pre><code>mlflow server \
+    --backend-store-uri postgresql://user:pass@host:5432/mlflow \
+    --default-artifact-root s3://my-bucket/mlflow-artifacts \
+    --host 0.0.0.0 \
+    --port 5000</code></pre>
+            
+            <h3>Components:</h3>
+            <ul>
+                <li><strong>Backend store:</strong> Metadata (PostgreSQL/MySQL for production)</li>
+                <li><strong>Artifact store:</strong> Model files (S3, GCS, Azure Blob, NFS)</li>
+                <li><strong>Frontend:</strong> UI and REST API</li>
+            </ul>
+            
+            <p><strong>Production tip:</strong> Use managed services or containerize with authentication/HTTPS.</p>
+            
+            <div class="source">
+                Source: <a href="https://mlflow.org/docs/latest/ml/tracking/server/" target="_blank">MLflow Tracking Server</a>
+            </div>
+        </div>
+
+        <!-- Slide 10 -->
+        <div class="slide">
+            <h2>10. MLflow Projects for reproducibility</h2>
+            <h3>Answer:</h3>
+            <p>MLflow Projects package code with dependencies for reproducible execution.</p>
+            
+            <pre><code># MLproject file
+name: My Project
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    parameters:
+      alpha: {type: float, default: 0.5}
+    command: "python train.py --alpha {alpha}"</code></pre>
+            
+            <h3>Use Cases:</h3>
+            <ul>
+                <li>Reproducible research</li>
+                <li>Sharing code with teammates</li>
+                <li>Automated hyperparameter tuning</li>
+                <li>CI/CD pipelines</li>
+            </ul>
+            
+            <pre><code>mlflow run git://github.com/user/project -P alpha=0.3</code></pre>
+            
+            <div class="source">
+                Source: <a href="https://mlflow.org/docs/latest/ml/projects/" target="_blank">MLflow Projects</a>
+            </div>
+        </div>
+
+        <!-- Slide 11 -->
+        <div class="slide">
+            <h2>11. Comparing multiple runs</h2>
+            <h3>UI Method:</h3>
+            <ol>
+                <li>Navigate to experiment in MLflow UI</li>
+                <li>Select multiple runs (checkboxes)</li>
+                <li>Click "Compare" button</li>
+                <li>View parallel coordinates plot, metrics comparison, parameter diffs</li>
+            </ol>
+            
+            <h3>Programmatic Method:</h3>
+            <pre><code>from mlflow.tracking import MlflowClient
+
+client = MlflowClient()
+runs = client.search_runs(
+    experiment_ids=["1"],
+    filter_string="metrics.accuracy > 0.9",
+    order_by=["metrics.accuracy DESC"]
+)
+
+for run in runs:
+    print(f"{run.info.run_id}: {run.data.metrics['accuracy']}")</code></pre>
+            
+            <p><strong>Best practice:</strong> Tag runs meaningfully and use consistent naming for easy filtering.</p>
+            
+            <div class="source">
+                Source: <a href="https://mlflow.org/docs/latest/ml/getting-started/hyperparameter-tuning/" target="_blank">Run Comparison</a>
+            </div>
+        </div>
+
+        <!-- Slide 12 -->
+        <div class="slide">
+            <h2>12. MLflow deployment options</h2>
+            <h3>Answer:</h3>
+            
+            <h3>1. Local REST API:</h3>
+            <pre><code>mlflow models serve -m models:/MyModel/Production -p 5001</code></pre>
+            
+            <h3>2. Docker container:</h3>
+            <pre><code>mlflow models build-docker -m models:/MyModel/Production -n my-model</code></pre>
+            
+            <h3>3. Cloud platforms:</h3>
+            <ul>
+                <li>AWS SageMaker</li>
+                <li>Azure ML</li>
+                <li>Google Cloud AI Platform</li>
+            </ul>
+            
+            <h3>4. Batch scoring:</h3>
+            <pre><code>mlflow models predict -m models:/MyModel/1 -i input.csv</code></pre>
+            
+            <h3>5. Apache Spark UDF</h3>
+            <p>For distributed scoring</p>
+            
+            <div class="source">
+                Source: <a href="https://mlflow.org/docs/latest/ml/deployment/" target="_blank">MLflow Deployment</a>
+            </div>
+        </div>
+
+        <!-- Slide 13 -->
+        <div class="slide">
+            <h2>13. Distributed training with MLflow</h2>
+            <h3>Pattern 1: Single parent run with nested runs</h3>
+            <pre><code>with mlflow.start_run():  # Parent run
+    mlflow.log_param("num_workers", 4)
+    
+    for worker_id in range(4):
+        with mlflow.start_run(nested=True):  # Child run
+            mlflow.log_metric("worker_accuracy", acc)</code></pre>
+            
+            <h3>Pattern 2: Spark MLflow integration</h3>
+            <pre><code>import mlflow.spark
+with mlflow.start_run():
+    model = pipeline.fit(train_df)
+    mlflow.spark.log_model(model, "spark-model")</code></pre>
+            
+            <p><strong>Key consideration:</strong> Ensure tracking URI is accessible from all workers and handle concurrent logging properly. Use MlflowClient for thread-safe operations.</p>
+            
+            <div class="source">
+                Source: <a href="https://mlflow.org/docs/latest/ml/python-api/mlflow.spark/" target="_blank">MLflow with Spark</a>
+            </div>
+        </div>
+
+        <!-- Slide 14 -->
+        <div class="slide">
+            <h2>14. MLflow's LLM and GenAI capabilities</h2>
+            <h3>Answer:</h3>
+            <p>Recent MLflow releases added comprehensive support for LLM/GenAI applications including tracing, prompt management, and evaluations.</p>
+            
+            <h3>Key Features:</h3>
+            <ul>
+                <li><strong>MLflow Tracing:</strong> Track internal states of LLM applications for debugging</li>
+                <li><strong>Prompt Management:</strong> Version and track prompts across organization</li>
+                <li><strong>LLM Evaluations:</strong> Built-in and custom judges for quality assessment</li>
+                <li><strong>Framework integrations:</strong> LangChain, LlamaIndex, OpenAI, Anthropic, etc.</li>
+            </ul>
+            
+            <pre><code>import mlflow
+
+# Trace LLM calls
+with mlflow.start_span(name="chat_completion"):
+    response = openai.ChatCompletion.create(...)
+    mlflow.log_param("model", "gpt-4")</code></pre>
+            
+            <div class="source">
+                Source: <a href="https://github.com/mlflow/mlflow/releases" target="_blank">MLflow Releases</a>
+            </div>
+        </div>
+
+        <!-- Slide 15: Resources -->
+        <div class="slide">
+            <h2>Additional Resources</h2>
+            <h3>Official Documentation & Community:</h3>
+            <ul>
+                <li><strong>Official Docs:</strong> <a href="https://mlflow.org/docs/latest/" target="_blank">mlflow.org/docs/latest/</a></li>
+                <li><strong>GitHub:</strong> <a href="https://github.com/mlflow/mlflow" target="_blank">github.com/mlflow/mlflow</a> (20k+ stars)</li>
+                <li><strong>PyPI:</strong> <a href="https://pypi.org/project/mlflow/" target="_blank">pypi.org/project/mlflow/</a></li>
+                <li><strong>Community:</strong> Slack, mailing list (mlflow-users@googlegroups.com)</li>
+            </ul>
+            
+            <h3 style="margin-top: 40px;">Installation:</h3>
+            <pre><code>pip install mlflow</code></pre>
+            
+            <h3>Quick Start:</h3>
+            <pre><code>mlflow ui  # Launch UI at http://localhost:5000</code></pre>
+            
+            <p style="margin-top: 40px; text-align: center; color: #667eea; font-size: 1.5em;">
+                <strong>Good luck with your interview! 🚀</strong>
+            </p>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <span class="slide-number">
+            <span id="currentSlide">1</span> / <span id="totalSlides">14</span>
+        </span>
+        <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const titleSlide = document.querySelector('[data-is-title="true"]');
+        
+        // Set total to exclude title slide
+        document.getElementById('totalSlides').textContent = totalSlides - 1;
+        
+        function updateSlideCounter() {
+            // Don't count title slide in the numbering
+            const displayNumber = currentSlide === 0 ? 1 : currentSlide;
+            document.getElementById('currentSlide').textContent = displayNumber;
+        }
+        
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            
+            // If moving past the title slide, hide it permanently
+            if (currentSlide === 0 && n > 0) {
+                titleSlide.classList.add('hidden');
+            }
+            
+            currentSlide = Math.max(0, Math.min(n, totalSlides - 1));
+            slides[currentSlide].classList.add('active');
+            
+            updateSlideCounter();
+            
+            // Update button states
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+        
+        function changeSlide(direction) {
+            let newSlide = currentSlide + direction;
+            
+            // Skip title slide when going backwards
+            if (currentSlide === 1 && direction === -1) {
+                return; // Don't go back to title slide
+            }
+            
+            // Skip title slide when going forward from it
+            if (currentSlide === 0 && direction === 1) {
+                newSlide = 1;
+            }
+            
+            showSlide(newSlide);
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && currentSlide > 1) {
+                changeSlide(-1);
+            } else if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) {
+                changeSlide(1);
+            }
+        });
+        
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
