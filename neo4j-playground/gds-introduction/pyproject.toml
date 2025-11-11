@@ -1,0 +1,15 @@
+[project]
+name = "gds-introduction"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "jupyter>=1.1.1",
+    "jupyterlab>=4.4.10",
+    "matplotlib>=3.10.7",
+    "notebook<7",
+    "pandas>=2.3.3",
+    "pyneo4j>=0.0.0",
+    "seaborn>=0.13.2",
+]
