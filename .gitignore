@@ -153,6 +153,9 @@ venv.bak/
 .dmypy.json
 dmypy.json
 
+# Local uv cache
+.uv-cache/
+
 # Pyre type checker
 .pyre/
 
@@ -173,3 +176,9 @@ cython_debug/
 .pypirc
 
 .streamlit/secrets.toml
+
+
+# AI CLIs
+AGENTS.md
+CLAUDE.md
+GEMINI.md
