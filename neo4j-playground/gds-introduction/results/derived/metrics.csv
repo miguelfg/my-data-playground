@@ -1,0 +1,2 @@
+algorithm,num_communities,modularity,largest_community,smallest_community,avg_community_size
+Louvain,3,0.5592040090903794,4,3,3.3333333333333335

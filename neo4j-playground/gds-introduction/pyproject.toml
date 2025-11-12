@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "graphdatascience>=1.17",
     "jupyter>=1.1.1",
     "jupyterlab>=4.4.10",
     "matplotlib>=3.10.7",
